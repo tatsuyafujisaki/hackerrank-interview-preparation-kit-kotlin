@@ -4,5 +4,7 @@ fun repeatedString(s: String, n: Long) =
     }
 
 fun main() {
-    println(repeatedString(readLine().orEmpty(), readLine()?.toLong() ?: 0))
+    val s = readLine().orEmpty()
+    val n = readLine()?.toLong() ?: 0
+    println(repeatedString(s, n))
 }
