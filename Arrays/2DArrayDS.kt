@@ -1,6 +1,6 @@
-fun readIntegers() = readLine().orEmpty().split(' ').map { it.toInt() }.toTypedArray()
+fun readIntegers() = readLine().orEmpty().split(' ').map { it.toInt() }
 
-fun hourglassSum(arr: Array<Array<Int>>): Int {
+fun hourglassSum(arr: List<List<Int>>): Int {
     var maxHourglassSum = Int.MIN_VALUE
     for (i in 1..4) {
         for (j in 1..4) {
@@ -16,7 +16,7 @@ fun hourglassSum(arr: Array<Array<Int>>): Int {
 fun main() {
     println(
         hourglassSum(
-            arrayOf(
+            listOf(
                 readIntegers(),
                 readIntegers(),
                 readIntegers(),
