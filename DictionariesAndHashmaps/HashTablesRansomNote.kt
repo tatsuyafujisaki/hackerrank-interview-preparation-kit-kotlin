@@ -1,4 +1,4 @@
-fun checkMagazine(magazine: List<String>, note: List<String>) {
+fun checkMagazine(magazine: Collection<String>, note: Collection<String>) {
     val map = magazine.groupingBy { it }.eachCount()
     note.groupingBy { it }.eachCount().forEach {
         if (map.getOrDefault(it.key, 0) < it.value) {
