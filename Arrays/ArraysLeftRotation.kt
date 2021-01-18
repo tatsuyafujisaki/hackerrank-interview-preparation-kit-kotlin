@@ -1,9 +1,4 @@
-import java.util.Collections
-
-fun rotLeft(a: List<Int>, d: Int): List<Int> {
-    Collections.rotate(a, -1 * d)
-    return a
-}
+fun rotLeft(a: Collection<Int>, d: Int) = a.drop(d) + a.take(d)
 
 fun main() {
     val d = readLine().orEmpty().split(' ').map { it.toInt() }[1]
