@@ -1,7 +1,7 @@
 fun checkMagazine(magazine: List<String>, note: List<String>) {
-    val magazineWordOccurrences = magazine.groupingBy { it }.eachCount()
+    val map = magazine.groupingBy { it }.eachCount()
     note.groupingBy { it }.eachCount().forEach {
-        if (magazineWordOccurrences.getOrDefault(it.key, 0) < it.value) {
+        if (map.getOrDefault(it.key, 0) < it.value) {
             println("No")
             return
         }
