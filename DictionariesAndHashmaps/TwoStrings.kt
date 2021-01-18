@@ -1,4 +1,4 @@
-fun twoStrings(s1: String, s2: String) = if (s1.toSet().intersect(s2.toSet()).isEmpty()) "NO" else "YES"
+fun twoStrings(s1: String, s2: String) = if (s1.toSet().intersect(s2.toSet()).isNotEmpty()) "YES" else "NO"
 
 fun main() {
     val t = readLine().orEmpty().toInt()
