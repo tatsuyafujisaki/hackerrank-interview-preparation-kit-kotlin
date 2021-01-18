@@ -1,19 +1,15 @@
 fun countingValleys(path: String): Int {
     var level = 0
-    var valleyCount = 0
-
+    var count = 0
     for (step in path) {
         if (step == 'U') {
             level++
         } else {
-            if (level == 0) {
-                valleyCount++
-            }
+            if (level == 0) count++
             level--
         }
     }
-
-    return valleyCount
+    return count
 }
 
 fun main() {
