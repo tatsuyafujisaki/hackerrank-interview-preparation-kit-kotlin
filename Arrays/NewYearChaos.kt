@@ -3,8 +3,8 @@ fun minimumBribes(q: List<Int>) {
     var expected2 = 2
     var expected3 = 3
     var bribes = 0
-    for (i in q.indices) {
-        when(q[i]) {
+    for (p in q) {
+        when (p) {
             expected1 -> {
                 expected1 = expected2
                 expected2 = expected3
