@@ -1,15 +1,12 @@
-fun sherlockAndAnagrams(s: String): Int {
-    var count = 0
-    val anagrams = mutableMapOf<String, Int>()
-    for (i in s.indices) {
-        for (j in i + 1..s.length) {
-            val substring = s.substring(i, j).toCharArray().sorted().joinToString("")
-            count += anagrams.getOrPut(substring) { 0 }
-            anagrams.merge(substring, 1, Int::plus)
+fun String.substrings() = sequence {
+    for (i in indices) {
+        for (j in i + 1..length) {
+            yield(substring(i, j))
         }
     }
-    return count
 }
+
+fun sherlockAndAnagrams(s: String) = s.substrings().map { it.toCharArray().sorted() }.groupingBy { it }.eachCount().map { it.value }.sumBy { (it * (it - 1)) / 2 }
 
 fun main() {
     val strings = mutableListOf<String>()
