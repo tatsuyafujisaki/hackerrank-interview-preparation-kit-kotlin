@@ -1,4 +1,4 @@
-fun readIntegers() = readLine().orEmpty().split(' ').map { it.toInt() }
+fun readIntegers() = readLine().orEmpty().split(' ').map(String::toInt)
 
 fun hourglassSum(arr: List<List<Int>>): Int {
     var maxHourglassSum = Int.MIN_VALUE
