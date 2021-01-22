@@ -2,5 +2,5 @@ fun sockMerchant(ar: Collection<Int>) = ar.groupingBy { it }.eachCount().values.
 
 fun main() {
     readLine() // Read and discard
-    println(sockMerchant(readLine().orEmpty().split(' ').map { it.toInt() }))
+    println(sockMerchant(readLine().orEmpty().split(' ').map(String::toInt)))
 }
