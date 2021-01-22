@@ -15,7 +15,7 @@ fun countTriplets(arr: List<Long>, r: Long): Long {
 }
 
 fun main() {
-    val r = readLine().orEmpty().split(' ').map { it.toLong() }[1]
-    val arr = readLine().orEmpty().split(' ').map { it.toLong() }
+    val r = readLine().orEmpty().split(' ').map(String::toLong)[1]
+    val arr = readLine().orEmpty().split(' ').map(String::toLong)
     println(countTriplets(arr, r))
 }
