@@ -1,7 +1,7 @@
 fun checkMagazine(magazine: Collection<String>, note: Collection<String>) {
-    val map = magazine.groupingBy { it }.eachCount()
+    val magazineWords = magazine.groupingBy { it }.eachCount()
     note.groupingBy { it }.eachCount().forEach {
-        if (map.getOrDefault(it.key, 0) < it.value) {
+        if (magazineWords.getOrDefault(it.key, 0) < it.value) {
             println("No")
             return
         }
@@ -11,7 +11,5 @@ fun checkMagazine(magazine: Collection<String>, note: Collection<String>) {
 
 fun main() {
     readLine() // Read and discard
-    val magazine = readLine().orEmpty().split(' ')
-    val note = readLine().orEmpty().split(' ')
-    checkMagazine(magazine, note)
+    checkMagazine(readLine().orEmpty().split(' '), readLine().orEmpty().split(' '))
 }
