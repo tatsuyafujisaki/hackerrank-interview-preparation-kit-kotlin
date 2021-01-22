@@ -1,4 +1,4 @@
-fun minimumBribes(q: List<Int>) {
+fun minimumBribes(q: Collection<Int>) {
     var expected1 = 1
     var expected2 = 2
     var expected3 = 3
@@ -31,6 +31,6 @@ fun minimumBribes(q: List<Int>) {
 fun main() {
     repeat(readLine().orEmpty().toInt()) {
         readLine() // Read and discard
-        minimumBribes(readLine().orEmpty().split(' ').map { it.toInt() })
+        minimumBribes(readLine().orEmpty().split(' ').map(String::toInt))
     }
 }
