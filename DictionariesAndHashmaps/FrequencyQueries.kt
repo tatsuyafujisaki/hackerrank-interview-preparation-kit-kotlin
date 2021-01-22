@@ -23,6 +23,7 @@ fun freqQuery(queries: List<List<Int>>): List<Int> {
                 counts.decrement(x)
                 countCounts.increment(counts.getValue(x))
             }
+            // You will get a Time Limit Exceeded in Test case 11 if you replace "countCounts.getValue(x) > 0" with "counts.containsValue(x)" for simplicity.
             else -> answers.add(if (countCounts.getValue(x) > 0) 1 else 0)
         }
     }
