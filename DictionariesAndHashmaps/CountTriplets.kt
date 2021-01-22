@@ -1,4 +1,6 @@
-fun <T> MutableMap<T, Long>.increment(key: T, value: Long = 1) = merge(key, value, Long::plus)
+fun <T> MutableMap<T, Long>.increment(key: T, value: Long = 1) {
+    merge(key, value, Long::plus)
+}
 
 fun countTriplets(arr: List<Long>, r: Long): Long {
     val singlets = mutableMapOf<Long, Long>()
