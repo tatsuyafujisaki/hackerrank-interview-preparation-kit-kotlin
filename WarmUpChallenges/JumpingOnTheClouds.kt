@@ -10,5 +10,5 @@ fun jumpingOnClouds(clouds: List<Int>): Int {
 
 fun main() {
     readLine() // Read and discard
-    println(jumpingOnClouds(readLine().orEmpty().split(' ').map { it.toInt() }))
+    println(jumpingOnClouds(readLine().orEmpty().split(' ').map(String::toInt)))
 }
