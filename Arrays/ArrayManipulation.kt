@@ -21,10 +21,10 @@ fun arrayManipulation(n: Int, queries: Array<IntArray>): Long {
 }
 
 fun main() {
-    val (n, m) = readLine().orEmpty().split(' ').map { it.toInt() }
+    val (n, m) = readLine().orEmpty().split(' ').map(String::toInt)
     val queries = Array(m) { IntArray(3) }
     for (i in 0 until m) {
-        queries[i] = readLine().orEmpty().split(' ').map { it.toInt() }.toIntArray()
+        queries[i] = readLine().orEmpty().split(' ').map(String::toInt).toIntArray()
     }
     println(arrayManipulation(n, queries))
 }
