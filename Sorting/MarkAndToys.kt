@@ -1,6 +1,6 @@
 import kotlin.String
 
-fun maximumToys(prices: List<Int>, k: Int): Int {
+fun maximumToys(prices: Collection<Int>, k: Int): Int {
     var totalPrice = 0
     prices.sorted().forEachIndexed { i, price ->
         totalPrice += price
