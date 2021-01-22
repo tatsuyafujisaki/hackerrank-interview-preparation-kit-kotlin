@@ -19,11 +19,11 @@ fun countSwaps(a: IntArray) {
         n = lastSwappedIndex
     }
     println("Array is sorted in $swaps swaps.")
-    println("First Element: " + a.first())
-    println("Last Element: " + a.last())
+    println("First Element: ${a.first()}")
+    println("Last Element: ${a.last()}")
 }
 
 fun main() {
     readLine() // Read and discard
-    countSwaps(readLine().orEmpty().split(' ').map { it.toInt() }.toIntArray())
+    countSwaps(readLine().orEmpty().split(' ').map(String::toInt).toIntArray())
 }
