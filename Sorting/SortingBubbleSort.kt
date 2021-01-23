@@ -1,10 +1,10 @@
-fun IntArray.swap(i: Int, j: Int) {
+fun MutableList<Int>.swap(i: Int, j: Int) {
     val temp = this[i]
     this[i] = this[j]
     this[j] = temp
 }
 
-fun countSwaps(a: IntArray) {
+fun countSwaps(a: MutableList<Int>) {
     var swaps = 0
     var n = a.size
     while (1 < n) {
@@ -25,5 +25,5 @@ fun countSwaps(a: IntArray) {
 
 fun main() {
     readLine() // Read and discard
-    countSwaps(readLine().orEmpty().split(' ').map(String::toInt).toIntArray())
+    countSwaps(readLine().orEmpty().split(' ').map(String::toInt).toMutableList())
 }
