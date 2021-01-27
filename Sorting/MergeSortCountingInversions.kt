@@ -33,17 +33,16 @@ class MergeSort {
     }
 }
 
+fun countInversions(arr: IntArray) =
+    with(MergeSort()) {
+        sort(arr)
+        swapped
+    }
+
 fun main() {
     val d = readLine().orEmpty().toInt()
-    val arrays = mutableListOf<IntArray>()
     repeat(d) {
         readLine() // Read and discard
-        arrays.add(readLine().orEmpty().split(' ').map(String::toInt).toIntArray())
-    }
-    for (arr in arrays) {
-        with(MergeSort()) {
-            sort(arr)
-            println(swapped)
-        }
+        println(countInversions(readLine().orEmpty().split(' ').map(String::toInt).toIntArray()))
     }
 }
