@@ -1,8 +1,6 @@
 fun String.substrings() = sequence {
     for (i in indices) {
-        for (j in i + 1..length) {
-            yield(substring(i, j))
-        }
+        for (j in i + 1..length) yield(substring(i, j))
     }
 }
 
