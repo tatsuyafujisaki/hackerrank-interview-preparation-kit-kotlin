@@ -1,4 +1,7 @@
-fun maxMin(k: Int, arr: IntArray) = with(arr.sorted()) { (0..size - k).map { this[it + k - 1] - this[it] }.min()!! }
+fun maxMin(k: Int, arr: IntArray): Int {
+    arr.sort()
+    return (0..arr.size - k).map { arr[it + k - 1] - arr[it] }.min()!!
+}
 
 fun main() {
     val n = readLine().orEmpty().toInt()
