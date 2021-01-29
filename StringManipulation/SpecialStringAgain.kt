@@ -1,21 +1,24 @@
 import kotlin.math.min
 
-// https://www.geeksforgeeks.org/count-special-palindromes-in-a-string
+/**
+ * https://www.geeksforgeeks.org/count-special-palindromes-in-a-string/
+ *
+ * Note there are no nested loops.
+ */
 fun substrCount(s: String): Int {
-    val counts = sequence {
-        var count = 0
-        var previous = 0.toChar()
-        for (c in s) {
-            if (previous == c) {
-                count++
-            } else {
-                yield(previous to count)
-                previous = c
-                count = 1
-            }
+    val counts = mutableListOf<Pair<Char, Int>>()
+    var count = 0
+    var previous = 0.toChar()
+    for (c in s) {
+        if (previous == c) {
+            count++
+        } else {
+            counts.add(previous to count)
+            previous = c
+            count = 1
         }
-        yield(previous to count)
-    }.toList()
+    }
+    counts.add(previous to count)
     // Sum of n! -> n(a_1+a_n)/2 -> n(n+1)/2
     // e.g. "aaa" -> "aaa", "aa", "aa", "a", "a", "a" -> 3(3+1)/2
     var total = counts.map { it.second }.sumBy { it * (it + 1) / 2 }
