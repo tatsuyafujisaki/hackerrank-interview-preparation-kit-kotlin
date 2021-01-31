@@ -1,26 +1,20 @@
-fun <T> MutableMap<T, Int>.increment(key: T) {
-    merge(key, 1, Int::plus)
-}
-
-fun <T> MutableMap<T, Int>.decrement(key: T) {
-    merge(key, 1, Int::minus)
-}
+val Char.alphabeticalIndex: Int get() = this - 'a'
 
 fun reverseShuffleMerge(s: String): String {
-    val remainingForA = s.groupingBy { it }.eachCount().mapValues { it.value / 2 }.toMutableMap().withDefault { 0 }
-    val remainingNotForA = remainingForA.toMutableMap().withDefault { 0 }
+    val remainingForA = IntArray(26).apply { for (c in s) this[c.alphabeticalIndex]++ }.map { it / 2 }.toIntArray()
+    val remainingNotForA = remainingForA.clone()
     val a = mutableListOf<Char>()
     s.reversed().forEach {
-        if (remainingForA.getValue(it) > 0) {
-            while (a.isNotEmpty() && a.last() > it && remainingNotForA.getValue(a.last()) > 0) {
-                val removed = a.removeAt(a.lastIndex) // Instead, use removeLast() in Kotlin 1.4+
-                remainingForA.increment(removed)
-                remainingNotForA.decrement(removed)
+        if (remainingForA[it.alphabeticalIndex] > 0) {
+            while (a.isNotEmpty() && a.last() > it && remainingNotForA[a.last().alphabeticalIndex] > 0) {
+                val removed = a.removeAt(a.lastIndex).alphabeticalIndex // Instead, use removeLast() in Kotlin 1.4+
+                remainingForA[removed]++
+                remainingNotForA[removed]--
             }
             a.add(it)
-            remainingForA.decrement(it)
+            remainingForA[it.alphabeticalIndex]--
         } else {
-            remainingNotForA.decrement(it)
+            remainingNotForA[it.alphabeticalIndex]--
         }
     }
     return a.joinToString("")
