@@ -13,7 +13,7 @@ fun reverseShuffleMerge(s: String): String {
     s.reversed().forEach {
         if (remainingForA.getValue(it) > 0) {
             while (a.isNotEmpty() && a.last() > it && remainingNotForA.getValue(a.last()) > 0) {
-                val removed = a.removeAt(a.lastIndex) // removeLast() in Kotlin 1.4+
+                val removed = a.removeAt(a.lastIndex) // Instead, use removeLast() in Kotlin 1.4+
                 remainingForA.increment(removed)
                 remainingNotForA.decrement(removed)
             }
