@@ -1,9 +1,9 @@
-fun <T> MutableMap<T, Int>.increment(key: T, value: Int = 1) {
-    merge(key, value, Int::plus)
+fun <T> MutableMap<T, Int>.increment(key: T) {
+    merge(key, 1, Int::plus)
 }
 
-fun <T> MutableMap<T, Int>.decrement(key: T, value: Int = 1) {
-    merge(key, value, Int::minus)
+fun <T> MutableMap<T, Int>.decrement(key: T) {
+    merge(key, 1, Int::minus)
 }
 
 fun reverseShuffleMerge(s: String): String {
