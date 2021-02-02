@@ -1,7 +1,7 @@
 fun readIntegers() = readLine().orEmpty().split(' ').map(String::toInt)
 
 fun triplets(a: Iterable<Int>, b: Iterable<Int>, c: Iterable<Int>): Long {
-    // toSortedSet() cannot be an alternative to distinct().sorted() because it causes a Time Limit Exceeded in the test case 2, 3, 4, 7, and 8.
+    // Instead, Iterable<T>.toSortedSet() causes a Time Limit Exceeded in the test case 2, 3, 4, 7, and 8.
     val setA = a.distinct().sorted()
     val setB = b.distinct().sorted()
     val setC = c.distinct().sorted()
