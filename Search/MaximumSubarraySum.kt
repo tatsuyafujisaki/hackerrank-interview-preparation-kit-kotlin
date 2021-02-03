@@ -1,4 +1,4 @@
-// https://stackoverflow.com/a/31114950/10867055
+// https://stackoverflow.com/q/31113993/10867055
 fun maximumSum(a: Iterable<Long>, m: Long): Long {
     val prefixSums = sortedSetOf(0L)
     var prefixSum = 0L
