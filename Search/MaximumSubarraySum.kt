@@ -1,4 +1,7 @@
-// https://stackoverflow.com/q/31113993/10867055
+/**
+ * https://www.quora.com/What-is-the-logic-used-in-the-HackerRank-Maximise-Sum-problem
+ * https://stackoverflow.com/q/31113993/10867055
+ */
 fun maximumSum(a: Iterable<Long>, m: Long): Long {
     val prefixSums = sortedSetOf(0L)
     var prefixSum = 0L
