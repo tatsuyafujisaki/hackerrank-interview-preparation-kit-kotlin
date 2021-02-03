@@ -1,4 +1,4 @@
-fun maximumSum(a: List<Long>, m: Long): Long {
+fun maximumSum(a: Iterable<Long>, m: Long): Long {
     val prefixSums = sortedSetOf(0L)
     var prefixSum = 0L
     return a.map { x ->
