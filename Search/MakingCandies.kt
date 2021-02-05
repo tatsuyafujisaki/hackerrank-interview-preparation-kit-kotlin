@@ -6,10 +6,11 @@ fun minimumPasses(m0: Long, w0: Long, p: Long, n: Long): Long {
     var m = m0
     var w = w0
     var candies = 0L
-    var totalPasses = 0L
-    var minTotalPasses = Long.MAX_VALUE
+    var passes = 0L
+    var minPasses = Long.MAX_VALUE
+    var pass: Long
     while (candies < n) {
-        val passes = if (candies < p) {
+        if (p <= candies) {
             val mw = candies / p + m + w
             val half = ceil(mw / 2.0).toLong()
             if (w < m) {
@@ -20,16 +21,16 @@ fun minimumPasses(m0: Long, w0: Long, p: Long, n: Long): Long {
                 m = mw - w
             }
             candies %= p
-            1
+            pass = 1
         } else {
-            max(1, (((p - candies) / m.toDouble()) / w).toLong())
+            pass = max(1, (((p - candies) / m.toDouble()) / w).toLong())
         }
-        totalPasses += passes
-        if (Long.MAX_VALUE / w < passes * m) return totalPasses
-        candies += passes * m * w
-        minTotalPasses = min(minTotalPasses, totalPasses + ceil((n - candies).toDouble() / (m * w)).toLong())
+        passes += pass
+        if (Long.MAX_VALUE / w < pass * m) return passes
+        candies += pass * m * w
+        minPasses = min(minPasses, passes + ceil((n - candies).toDouble() / (m * w)).toLong())
     }
-    return minTotalPasses
+    return minPasses
 }
 
 fun main() {
