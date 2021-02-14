@@ -9,9 +9,8 @@ fun createF() = List(maxD + 1) { LongArray(maxS + 1) }.apply {
     for (d in 1..maxD) {
         for (s in 0..maxS) {
             for (i in 0..9) {
-                (s - i * pow2[d - 1]).let {
-                    if (it >= 0) this[d][s] += this[d - 1][it]
-                }
+                val previousS = s - i * pow2[d - 1]
+                if (previousS >= 0) this[d][s] += this[d - 1][previousS]
             }
         }
     }
