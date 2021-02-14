@@ -1,7 +1,7 @@
 // https://allhackerranksolutionsbykaira.blogspot.com/2020/04/decibinary-numbers-hackerrank-solution.html
 const val maxD = 19 // See the editorial for details.
 const val maxS = 300000 // See the editorial for details.
-val pow2: IntArray = intArrayOf(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072, 262144)
+val pow2 = intArrayOf(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072, 262144)
 
 /** Equivalent of f(d, s) in the editorial */
 fun createF() = List(maxD + 1) { LongArray(maxS + 1) }.apply {
