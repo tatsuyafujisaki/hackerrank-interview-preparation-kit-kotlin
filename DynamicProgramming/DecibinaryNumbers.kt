@@ -36,14 +36,14 @@ fun decibinaryNumbers(f: List<LongArray>, c: LongArray, x: Long): Long {
     var g = if (s > 0) x - c[s - 1] else x
     var decibinaryDigits = ""
     for (d in maxD downTo 1) {
-        var i = -1
+        var i = 0
         var previousDecibinaryCount = 0L
         var decibinaryCount = 0L
         while (decibinaryCount < g) {
-            i++
             previousDecibinaryCount = decibinaryCount
-            decibinaryCount += f[d - 1][s - i * pow2[d - 1]]
+            decibinaryCount += f[d - 1][s - i++ * pow2[d - 1]]
         }
+        i--
         decibinaryDigits += i
         s -= i * pow2[d - 1]
         g -= previousDecibinaryCount
