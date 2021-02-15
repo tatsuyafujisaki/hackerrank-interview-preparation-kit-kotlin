@@ -5,9 +5,9 @@ fun Stack<*>.popOrNull() = if (empty()) null else pop()
 fun isBalanced(s: String) = with(Stack<Char>()) {
     for (c in s) {
         when (c) {
-            '{' -> push('}')
-            '[' -> push(']')
             '(' -> push(')')
+            '[' -> push(']')
+            '{' -> push('}')
             else -> if (c != popOrNull()) return "NO"
         }
     }
