@@ -20,7 +20,7 @@ class Queue<T> {
 
     private fun prepare() {
         if (outbox.isEmpty()) {
-            while (!inbox.isEmpty()) outbox.push(inbox.pop())
+            while (inbox.isNotEmpty()) outbox.push(inbox.pop())
         }
     }
 }
