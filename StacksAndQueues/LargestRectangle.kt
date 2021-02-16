@@ -1,7 +1,7 @@
 import java.util.Stack
 import kotlin.math.max
 
-private fun Stack<Int>.safePeek() = if (empty()) -1 else peek()
+fun Stack<Int>.safePeek() = if (empty()) -1 else peek()
 
 fun largestRectangle(h: List<Int>): Int {
     var maxArea = 0
