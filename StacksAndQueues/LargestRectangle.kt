@@ -5,7 +5,7 @@ private fun Stack<Int>.peekOrDefault() = if (empty()) -1 else peek()
 
 fun largestRectangle(h: List<Int>): Int {
     var maxArea = 0
-    val stack = Stack<Int>().apply { push(0) }
+    val stack = Stack<Int>()
     var i = 0
     while (i < h.size) {
         if (stack.isEmpty() || h[stack.peek()] <= h[i]) {
