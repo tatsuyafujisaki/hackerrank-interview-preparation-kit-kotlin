@@ -3,6 +3,7 @@ import kotlin.math.max
 
 fun Stack<Int>.safePeek() = if (empty()) -1 else peek()
 
+// https://www.geeksforgeeks.org/largest-rectangle-under-histogram/
 fun largestRectangle(h: List<Int>): Int {
     var maxArea = 0
     val stack = Stack<Int>()
