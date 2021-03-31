@@ -20,6 +20,6 @@ fun largestRectangle(h: List<Int>): Int {
 }
 
 fun main() {
-    readLine() // Read and discard.
+    readLine() // Read and discard
     println(largestRectangle(readLine().orEmpty().split(' ').map(String::toInt)))
 }
