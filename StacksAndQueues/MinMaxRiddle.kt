@@ -1,34 +1,26 @@
 import java.util.Stack
 import kotlin.math.max
 
-fun findSmallerLeft(xs: List<Int>): IntArray {
-    val stack = Stack<Int>()
-    return IntArray(xs.size).apply {
-        for (i in xs.indices) {
+// https://www.geeksforgeeks.org/find-the-maximum-of-minimums-for-every-window-size-in-a-given-array/
+fun riddle(arr: List<Int>): IntArray {
+    val left = IntArray(arr.size).apply {
+        val stack = Stack<Int>()
+        for (i in arr.indices) {
             // TODO Instead of pop(), use removeLast() in Kotlin 1.4+ because removeLast() does not bother to return the removed value we don't use.
-            while (stack.isNotEmpty() && xs[stack.peek()] >= xs[i]) stack.pop()
+            while (stack.isNotEmpty() && arr[stack.peek()] >= arr[i]) stack.pop()
             this[i] = stack.lastOrNull() ?: -1
             stack.push(i)
         }
     }
-}
-
-fun findSmallerRight(xs: List<Int>): IntArray {
-    val stack = Stack<Int>()
-    return IntArray(xs.size).apply {
-        for (i in xs.lastIndex downTo 0) {
+    val right = IntArray(arr.size).apply {
+        val stack = Stack<Int>()
+        for (i in arr.lastIndex downTo 0) {
             // TODO Instead of pop(), use removeLast() in Kotlin 1.4+ because removeLast() does not bother to return the removed value we don't use.
-            while (stack.isNotEmpty() && xs[stack.peek()] >= xs[i]) stack.pop()
-            this[i] = stack.lastOrNull() ?: xs.size
+            while (stack.isNotEmpty() && arr[stack.peek()] >= arr[i]) stack.pop()
+            this[i] = stack.lastOrNull() ?: arr.size
             stack.push(i)
         }
     }
-}
-
-// https://www.geeksforgeeks.org/find-the-maximum-of-minimums-for-every-window-size-in-a-given-array/
-fun riddle(arr: List<Int>): IntArray {
-    val left = findSmallerLeft(arr)
-    val right = findSmallerRight(arr)
     return IntArray(arr.size).apply {
         for (i in arr.indices) {
             val windowSize = right[i] - left[i] - 1
