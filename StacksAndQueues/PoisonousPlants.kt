@@ -1,22 +1,22 @@
 fun poisonousPlants(p: List<Int>): Int {
-    val listOfDescendingPlantLists = mutableListOf(mutableListOf(p.first())).apply {
+    val descents = mutableListOf(mutableListOf(p.first())).apply {
         for (i in 1 until p.size) {
-            val descendingPlantList = last()
-            if (p[i] <= descendingPlantList.last()) descendingPlantList.add(p[i]) else add(mutableListOf(p[i]))
+            val descent = last()
+            if (p[i] <= descent.last()) descent.add(p[i]) else add(mutableListOf(p[i]))
         }
     }
     var days = 0
-    while (listOfDescendingPlantLists.size > 1) {
-        for (i in 1 until listOfDescendingPlantLists.size) listOfDescendingPlantLists[i].removeAt(0) // TODO: Use removeFirst() in Kotlin 1.4+.
-        listOfDescendingPlantLists.removeIf {
+    while (descents.size > 1) {
+        for (i in 1 until descents.size) descents[i].removeAt(0) // TODO: Use removeFirst() in Kotlin 1.4+.
+        descents.removeIf {
             it.isEmpty()
         }
         do {
             var merged = false
-            for (i in 0 until listOfDescendingPlantLists.lastIndex) {
-                if (listOfDescendingPlantLists[i].last() >= listOfDescendingPlantLists[i + 1].first()) {
-                    listOfDescendingPlantLists[i].addAll(listOfDescendingPlantLists[i + 1])
-                    listOfDescendingPlantLists.removeAt(i + 1)
+            for (i in 0 until descents.lastIndex) {
+                if (descents[i].last() >= descents[i + 1].first()) {
+                    descents[i].addAll(descents[i + 1])
+                    descents.removeAt(i + 1)
                     merged = true
                     break
                 }
