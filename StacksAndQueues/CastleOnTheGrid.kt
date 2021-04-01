@@ -7,7 +7,7 @@ fun minimumMoves(grid: Array<BooleanArray>, startX: Int, startY: Int, goalX: Int
     do {
         val toVisit = mutableListOf<Pair<Int, Int>>()
         while (visited.isNotEmpty()) {
-            val (visitedX, visitedY) = visited.removeAt(0) // TODO: Use removeFirst() in Kotlin 1.4+ for simplicity.
+            val (visitedX, visitedY) = visited.removeAt(0) // TODO: Use removeFirst() in Kotlin 1.4+.
 
             fun visit(x: Int, y: Int) {
                 if (moves[x][y] == Int.MAX_VALUE) {
