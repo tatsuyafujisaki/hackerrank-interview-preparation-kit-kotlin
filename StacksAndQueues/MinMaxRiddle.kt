@@ -6,7 +6,7 @@ fun riddle(arr: List<Int>): IntArray {
     val left = IntArray(arr.size).apply {
         val stack = Stack<Int>()
         for (i in arr.indices) {
-            // TODO Instead of pop(), use removeLast() in Kotlin 1.4+ because removeLast() does not bother to return the removed value we don't use.
+            // TODO: Instead of pop(), use removeLast() in Kotlin 1.4+ because removeLast() does not bother to return the removed value we don't use.
             while (stack.isNotEmpty() && arr[stack.peek()] >= arr[i]) stack.pop()
             this[i] = stack.lastOrNull() ?: -1
             stack.push(i)
@@ -15,7 +15,7 @@ fun riddle(arr: List<Int>): IntArray {
     val right = IntArray(arr.size).apply {
         val stack = Stack<Int>()
         for (i in arr.lastIndex downTo 0) {
-            // TODO Instead of pop(), use removeLast() in Kotlin 1.4+ because removeLast() does not bother to return the removed value we don't use.
+            // TODO: Instead of pop(), use removeLast() in Kotlin 1.4+ because removeLast() does not bother to return the removed value we don't use.
             while (stack.isNotEmpty() && arr[stack.peek()] >= arr[i]) stack.pop()
             this[i] = stack.lastOrNull() ?: arr.size
             stack.push(i)
