@@ -45,25 +45,20 @@ fun roadsAndLibraries(n: Int, cLib: Int, cRoad: Int, pairs: Set<Pair<Int, Int>>)
 
 fun main() {
     repeat(readLine().orEmpty().toInt()) {
-        val (n, m, cLib, cRoad) = readLine().orEmpty().split(' ').filterNot(String::isEmpty).map(String::toInt)
-        val cities = mutableSetOf<Pair<Int, Int>>().apply {
-            if(cLib <= cRoad) {
-                repeat(m) {
-                    readLine() // Read and discard
-                }
-            } else {
-                repeat(m) {
-                    add(readLine()
-                        .orEmpty()
-                        .split(' ')
-                        .asSequence()
-                        .filterNot(String::isEmpty)
-                        .map(String::toInt)
-                        .map { it - 1 /* Convert to zero-based numbering */ }
-                        .zipWithNext()
-                        .first()
-                    )
-                }
+        val (n, m, cLib, cRoad) = readLine().orEmpty().split(' ').map(String::toInt)
+        val cities = mutableSetOf<Pair<Int, Int>>()
+        if (cLib <= cRoad) {
+            repeat(m) {
+                readLine() // Read and discard
+            }
+        } else {
+            repeat(m) {
+                val line = readLine()
+                    .orEmpty()
+                    .split(' ')
+                    .map(String::toInt)
+                    .map { it - 1 /* Convert to zero-based numbering */ }
+                cities.add(line[0] to line[1])
             }
         }
         println(roadsAndLibraries(n, cLib, cRoad, cities))
