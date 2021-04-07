@@ -36,9 +36,8 @@ fun roadsAndLibraries(n: Int, cLib: Int, cRoad: Int, pairs: Set<Pair<Int, Int>>)
     if (cLib <= cRoad) return cLib.toLong() * n
     val disjointSets = DisjointSets(n)
     for (pair in pairs) disjointSets.union(pair.first, pair.second)
-    return disjointSets.result.map {
-        cLib.toLong() + cRoad * (it.size - 1)
-    }.sum()
+    val componentCount = disjointSets.result.size.toLong()
+    return cLib * componentCount + cRoad * (n - componentCount)
 }
 
 fun main() {
