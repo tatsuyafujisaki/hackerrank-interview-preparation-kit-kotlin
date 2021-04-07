@@ -4,11 +4,11 @@
  * You need "long" only in the final calculation. Until then, "int" should be big enough.
  * If you get a TLE, try discarding the input lines of city pairs to slightly speed up when c_lib <= c_road.
  * If you fail the test case 4,5,6,8,9,10, ensure that the following mock test case below returns 5.
- * 1
- * 4 3 2 1
- * 1 3
- * 2 4
- * 1 2
+1
+4 3 2 1
+1 3
+2 4
+1 2
  */
 class DisjointSets(n: Int) {
     private val parents = IntArray(n) { it }
