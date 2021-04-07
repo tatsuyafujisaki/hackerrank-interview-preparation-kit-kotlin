@@ -50,12 +50,15 @@ fun main() {
             }
         } else {
             repeat(m) {
-                val line = readLine()
+                cities.add(readLine()
                     .orEmpty()
                     .split(' ')
                     .map(String::toInt)
                     .map { it - 1 /* Convert to zero-based numbering */ }
-                cities.add(line[0] to line[1])
+                    .let {
+                        it[0] to it[1]
+                    }
+                )
             }
         }
         println(roadsAndLibraries(n, cLib, cRoad, cities))
