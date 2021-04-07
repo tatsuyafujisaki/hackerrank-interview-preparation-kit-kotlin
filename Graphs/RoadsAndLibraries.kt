@@ -9,13 +9,11 @@ class DisjointSets(n: Int) {
         get() = parents
             .mapIndexed { i, x -> x to i }
             .groupBy({ it.first }, { it.second })
-            .values.map { it.toSet() }
-            .toSet()
+            .values
 
     /** Using the technique "path compression" */
     private fun findRoot(x: Int): Int {
-        if (parents[x] == x) return x
-        parents[x] = findRoot(parents[x])
+        if (parents[x] != x) parents[x] = findRoot(parents[x])
         return parents[x]
     }
 
