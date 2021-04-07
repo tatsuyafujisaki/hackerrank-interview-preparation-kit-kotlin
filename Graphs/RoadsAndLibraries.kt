@@ -7,7 +7,7 @@ class DisjointSets(n: Int) {
 
     val islands: Collection<List<Int>>
         get() {
-            // Ensure each city in an island is the direct child of the island's root city.
+            // Make each parent trace back to its root ancestor.
             for (i in parents.indices) parents[i] = findRoot(parents[i])
             return parents
                 .mapIndexed { i, x -> x to i }
