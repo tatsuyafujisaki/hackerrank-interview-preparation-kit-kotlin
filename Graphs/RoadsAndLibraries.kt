@@ -3,13 +3,17 @@
  */
 class DisjointSets(n: Int) {
     private val parents = IntArray(n) { it }
-    private val ranks = LongArray(n)
+    private val ranks = IntArray(n)
 
-    val result
-        get() = parents
-            .mapIndexed { i, x -> x to i }
-            .groupBy({ it.first }, { it.second })
-            .values
+    val islands: Collection<List<Int>>
+        get() {
+            // Ensure each city in an island is the direct child of the island's root city.
+            for (i in parents.indices) parents[i] = findRoot(parents[i])
+            return parents
+                .mapIndexed { i, x -> x to i }
+                .groupBy({ it.first }, { it.second })
+                .values
+        }
 
     /** Using the technique "path compression" */
     private fun findRoot(x: Int): Int {
@@ -36,8 +40,8 @@ fun roadsAndLibraries(n: Int, cLib: Int, cRoad: Int, pairs: Set<Pair<Int, Int>>)
     if (cLib <= cRoad) return cLib.toLong() * n
     val disjointSets = DisjointSets(n)
     for (pair in pairs) disjointSets.union(pair.first, pair.second)
-    val componentCount = disjointSets.result.size.toLong()
-    return cLib * componentCount + cRoad * (n - componentCount)
+    val islandCount = disjointSets.islands.size.toLong()
+    return cLib * islandCount + cRoad * (n - islandCount)
 }
 
 fun main() {
