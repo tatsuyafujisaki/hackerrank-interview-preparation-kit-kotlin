@@ -14,6 +14,6 @@ fun main() {
         val money = readLine().orEmpty().toInt()
         readLine() // Read and discard
         // Costs in all the non-sample test cases contain a trailing space, which will causes a parsing error.
-        whatFlavors(readLine().orEmpty().split(' ').filterNot(String::isEmpty).map(String::toInt), money)
+        whatFlavors(readLine().orEmpty().trim().split(' ').map(String::toInt), money)
     }
 }
