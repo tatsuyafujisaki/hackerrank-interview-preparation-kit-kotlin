@@ -1,5 +1,5 @@
 fun main() {
-    val edgeCost = 6
+    val edgeLength = 6
     repeat(readLine().orEmpty().toInt()) {
         val (n, m) = readLine().orEmpty().split(' ').map(String::toInt)
         val graph = Array(n) { mutableSetOf<Int>() }
@@ -8,7 +8,7 @@ fun main() {
             graph[u].add(v)
             graph[v].add(u)
         }
-        val s = readLine().orEmpty().trim().toInt() - 1 // to zero-based
+        val s = readLine().orEmpty().toInt() - 1 // to zero-based
         val distances = IntArray(n) {
             if (it == s) 0 else -1
         }
@@ -20,7 +20,7 @@ fun main() {
                     distances[it] == -1
                 }
                 .forEach {
-                    distances[it] = distances[currentNode] + edgeCost
+                    distances[it] = distances[currentNode] + edgeLength
                     nodesToVisit.add(it)
                 }
         }
