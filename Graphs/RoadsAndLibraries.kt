@@ -37,7 +37,7 @@ class DisjointSets(n: Int) {
 
     val components: Collection<List<Int>>
         get() {
-            // Make each parent trace back to its root ancestor.
+            // Make each parent the direct child of its root ancestor.
             for (i in parents.indices) parents[i] = findRoot(parents[i])
             return parents
                 .mapIndexed { i, x -> x to i }
