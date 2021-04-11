@@ -1,6 +1,7 @@
 class DisjointSets(n: Int, machines: Array<Int>) {
     private val parents = IntArray(n) { it }
     private val ranks = IntArray(n)
+
     val isInMachineComponent = BooleanArray(n).apply {
         for (machine in machines) this[machine] = true
     }
