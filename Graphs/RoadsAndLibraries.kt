@@ -1,6 +1,6 @@
 /**
  * When c_lib <= c_road, the answer is c_lib * n.
- * When c_road < c_lib, the answer is c_lib * number_of_islands + c_road * (n - number_of_islands).
+ * When c_road < c_lib, the answer is c_lib * number_of_components + c_road * (n - number_of_components).
  * You need "long" only in the final calculation. Until then, "int" should be big enough.
  * If you fail the test case 4,5,6,8,9,10, ensure that the following mock test case below returns 5.
 ```
@@ -35,7 +35,7 @@ class DisjointSets(n: Int) {
         }
     }
 
-    val islands: Collection<List<Int>>
+    val components: Collection<List<Int>>
         get() {
             // Make each parent trace back to its root ancestor.
             for (i in parents.indices) parents[i] = findRoot(parents[i])
@@ -50,8 +50,8 @@ fun roadsAndLibraries(n: Int, cLib: Int, cRoad: Int, pairs: Array<Pair<Int, Int>
     if (cLib <= cRoad) return cLib.toLong() * n
     val disjointSets = DisjointSets(n)
     for (pair in pairs) disjointSets.union(pair.first, pair.second)
-    val islandCount = disjointSets.islands.size.toLong()
-    return cLib * islandCount + cRoad * (n - islandCount)
+    val componentCount = disjointSets.components.size.toLong()
+    return cLib * componentCount + cRoad * (n - componentCount)
 }
 
 fun main() {
