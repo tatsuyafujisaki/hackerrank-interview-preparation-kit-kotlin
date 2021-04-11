@@ -1,3 +1,5 @@
+// Submit your solution in Python or C++ because the driver code for Java is broken.
+
 boolean checkBST(Node root) {
     return checkBST(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
 }
