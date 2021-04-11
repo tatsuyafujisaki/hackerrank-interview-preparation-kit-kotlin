@@ -32,20 +32,17 @@ class DisjointSets(n: Int, machines: Array<Int>) {
 fun minTime(roads: Array<List<Int>>, machines: Array<Int>): Int {
     var totalTime = 0
     val disjointSets = DisjointSets(roads.size + 1 /* nodes = roads + 1 */, machines)
-    roads
-        .sortedByDescending {
-            it[2] // time
-        }.forEach {
-            val root1 = disjointSets.findRoot(it[0])
-            val root2 = disjointSets.findRoot(it[1])
-            val isCity1InMachineComponent = disjointSets.isInMachineComponent[root1]
-            val isCity2InMachineComponent = disjointSets.isInMachineComponent[root2]
-            if (isCity1InMachineComponent && isCity2InMachineComponent) {
-                totalTime += it[2]
-            } else {
-                disjointSets.union(root1, root2, isCity1InMachineComponent || isCity2InMachineComponent)
-            }
+    roads.sortedByDescending { it[2] /* time */ }.forEach {
+        val root1 = disjointSets.findRoot(it[0])
+        val root2 = disjointSets.findRoot(it[1])
+        val isCity1InMachineComponent = disjointSets.isInMachineComponent[root1]
+        val isCity2InMachineComponent = disjointSets.isInMachineComponent[root2]
+        if (isCity1InMachineComponent && isCity2InMachineComponent) {
+            totalTime += it[2]
+        } else {
+            disjointSets.union(root1, root2, isCity1InMachineComponent || isCity2InMachineComponent)
         }
+    }
     return totalTime
 }
 
