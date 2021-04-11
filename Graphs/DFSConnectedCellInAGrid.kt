@@ -5,9 +5,7 @@ fun maxRegion(grid: Array<BooleanArray>): Int {
         0
     } else {
         grid[row][column] = false
-        count(row - 1, column - 1) + count(row - 1, column) + count(row - 1, column + 1) +
-            count(row, column - 1) + 1 + count(row, column + 1) +
-            count(row + 1, column - 1) + count(row + 1, column) + count(row + 1, column + 1)
+        count(row - 1, column - 1) + count(row - 1, column) + count(row - 1, column + 1) + count(row, column - 1) + 1 + count(row, column + 1) + count(row + 1, column - 1) + count(row + 1, column) + count(row + 1, column + 1)
     }
 
     var result = 0
