@@ -16,7 +16,7 @@ fun MutableList<Node>.swapSubtrees(k: Int, h: Int = 1, index: Int = 1) {
 
 fun List<Node>.traverseInOrder(index: Int = 1): List<Int> = if (index == -1) emptyList() else traverseInOrder(this[index - 1].left) + index + traverseInOrder(this[index - 1].right)
 
-fun swapNodes(indexes: Collection<List<Int>>, queries: Collection<Int>): List<List<Int>> {
+fun swapNodes(indexes: Array<IntArray>, queries: Array<Int>): List<List<Int>> {
     val nodes = mutableListOf<Node>()
     for (index in indexes) nodes.add(Node(index[0], index[1]))
     return queries.map {
@@ -26,13 +26,11 @@ fun swapNodes(indexes: Collection<List<Int>>, queries: Collection<Int>): List<Li
 }
 
 fun main() {
-    val indexes = mutableListOf<List<Int>>()
-    repeat(readLine().orEmpty().toInt()) {
-        indexes.add(readLine().orEmpty().split(' ').map(String::toInt))
+    val indexes = Array(readLine().orEmpty().toInt()) {
+        readLine().orEmpty().split(' ').map(String::toInt).toIntArray()
     }
-    val queries = mutableListOf<Int>()
-    repeat(readLine().orEmpty().toInt()) {
-        queries.add(readLine().orEmpty().toInt())
+    val queries = Array(readLine().orEmpty().toInt()) {
+        readLine().orEmpty().toInt()
     }
     for (nodes in swapNodes(indexes, queries)) println(nodes.joinToString(" "))
 }
