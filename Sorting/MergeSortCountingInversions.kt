@@ -40,8 +40,7 @@ fun countInversions(arr: IntArray) =
     }
 
 fun main() {
-    val d = readLine().orEmpty().toInt()
-    repeat(d) {
+    repeat(readLine().orEmpty().toInt()) {
         readLine() // Read and discard
         println(countInversions(readLine().orEmpty().split(' ').map(String::toInt).toIntArray()))
     }
