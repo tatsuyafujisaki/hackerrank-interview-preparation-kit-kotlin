@@ -1,4 +1,4 @@
-fun arrayManipulation(n: Int, queries: List<IntArray>): Long {
+fun arrayManipulation(n: Int, queries: Iterable<IntArray>): Long {
     val xs = LongArray(n)
     for (query in queries) {
         val a = query[0]
