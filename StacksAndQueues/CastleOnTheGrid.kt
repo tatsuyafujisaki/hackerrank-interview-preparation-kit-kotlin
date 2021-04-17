@@ -1,7 +1,7 @@
-fun minimumMoves(grid: Array<BooleanArray>, startX: Int, startY: Int, goalX: Int, goalY: Int): Int {
+fun minimumMoves(grid: List<BooleanArray>, startX: Int, startY: Int, goalX: Int, goalY: Int): Int {
     val n = grid.size
-    val moves = Array(n) { IntArray(n) { Int.MAX_VALUE } }.apply {
-        this[startX][startY] = 0
+    val moves = List(n) { IntArray(n) { Int.MAX_VALUE } }.also {
+        it[startX][startY] = 0
     }
     var visited = mutableListOf(startX to startY)
     do {
@@ -48,7 +48,7 @@ fun minimumMoves(grid: Array<BooleanArray>, startX: Int, startY: Int, goalX: Int
 
 fun main() {
     val n = readLine().orEmpty().toInt()
-    val grid = Array(n) { BooleanArray(n) }
+    val grid = List(n) { BooleanArray(n) }
     for (i in 0 until n) readLine().orEmpty().toCharArray().map { it == '.' }.toBooleanArray().copyInto(grid[i])
     val (startX, startY, goalX, goalY) = readLine().orEmpty().split(' ').map(String::toInt)
     println(minimumMoves(grid, startX, startY, goalX, goalY))
