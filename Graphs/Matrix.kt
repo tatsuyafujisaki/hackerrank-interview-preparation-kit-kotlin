@@ -1,4 +1,4 @@
-class DisjointSets(n: Int, machines: Array<Int>) {
+class DisjointSets(n: Int, machines: List<Int>) {
     private val parents = IntArray(n) { it }
     private val ranks = IntArray(n)
 
@@ -29,7 +29,7 @@ class DisjointSets(n: Int, machines: Array<Int>) {
     }
 }
 
-fun minTime(roads: Array<List<Int>>, machines: Array<Int>): Int {
+fun minTime(roads: Array<List<Int>>, machines: List<Int>): Int {
     var totalTime = 0
     val disjointSets = DisjointSets(roads.size + 1 /* nodes = roads + 1 */, machines)
     roads.sortedByDescending { it[2] /* time */ }.forEach {
@@ -51,5 +51,5 @@ fun main() {
     val roads = Array(n - 1) {
         readLine().orEmpty().split(' ').map(String::toInt)
     }
-    println(minTime(roads, Array(k) { readLine().orEmpty().toInt() }))
+    println(minTime(roads, List(k) { readLine().orEmpty().toInt() }))
 }
