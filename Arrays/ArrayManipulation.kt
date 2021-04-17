@@ -1,4 +1,4 @@
-fun arrayManipulation(n: Int, queries: Array<IntArray>): Long {
+fun arrayManipulation(n: Int, queries: List<IntArray>): Long {
     val xs = LongArray(n)
     for (query in queries) {
         val a = query[0]
@@ -22,9 +22,8 @@ fun arrayManipulation(n: Int, queries: Array<IntArray>): Long {
 
 fun main() {
     val (n, m) = readLine().orEmpty().split(' ').map(String::toInt)
-    val queries = Array(m) { IntArray(3) }
-    for (i in 0 until m) {
-        queries[i] = readLine().orEmpty().split(' ').map(String::toInt).toIntArray()
+    val queries = List(m) {
+        readLine().orEmpty().split(' ').map(String::toInt).toIntArray()
     }
     println(arrayManipulation(n, queries))
 }
