@@ -14,12 +14,7 @@ fun swapSubtrees(nodes: List<Node>, k: Int, h: Int = 1, index: Int = 1) {
     swapSubtrees(nodes, k, h + 1, node.right)
 }
 
-fun traverseInOrder(nodes: List<Node>, index: Int = 1): List<Int> = if (index == -1) {
-    emptyList()
-} else traverseInOrder(nodes, nodes[index - 1].left) + index + traverseInOrder(
-    nodes,
-    nodes[index - 1].right
-)
+fun traverseInOrder(nodes: List<Node>, index: Int = 1): List<Int> = if (index == -1) emptyList() else traverseInOrder(nodes, nodes[index - 1].left) + index + traverseInOrder(nodes, nodes[index - 1].right)
 
 fun swapNodes(indices: Iterable<IntArray>, queries: Iterable<Int>): List<List<Int>> {
     val nodes = mutableListOf<Node>()
