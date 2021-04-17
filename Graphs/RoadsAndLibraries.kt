@@ -46,7 +46,7 @@ class DisjointSets(n: Int) {
         }
 }
 
-fun roadsAndLibraries(n: Int, cLib: Int, cRoad: Int, pairs: Array<Pair<Int, Int>>): Long {
+fun roadsAndLibraries(n: Int, cLib: Int, cRoad: Int, pairs: Collection<Pair<Int, Int>>): Long {
     if (cLib <= cRoad) return cLib.toLong() * n
     val disjointSets = DisjointSets(n)
     for (pair in pairs) disjointSets.union(pair.first, pair.second)
@@ -57,12 +57,12 @@ fun roadsAndLibraries(n: Int, cLib: Int, cRoad: Int, pairs: Array<Pair<Int, Int>
 fun main() {
     repeat(readLine().orEmpty().toInt()) {
         val (n, m, cLib, cRoad) = readLine().orEmpty().split(' ').map(String::toInt)
-        val cities = Array(m) {
+        val cities = List(m) {
             readLine()
                 .orEmpty()
                 .split(' ')
                 .map(String::toInt)
-                .map { it - 1 /* Convert to zero-based numbering */ }
+                .map { it - 1 /* Converts to zero-based numbering */ }
                 .let {
                     it[0] to it[1]
                 }
