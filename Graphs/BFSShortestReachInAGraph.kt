@@ -1,5 +1,24 @@
-fun main() {
+fun bfs(graph: List<Set<Int>>, s: Int): List<Int> {
     val edgeLength = 6
+    val distances = IntArray(graph.size) { -1 }.apply {
+        this[s] = 0
+    }
+    val nodesToVisit = mutableListOf(s)
+    while (nodesToVisit.isNotEmpty()) {
+        val currentNode = nodesToVisit.removeAt(0) // TODO: Use removeFirst() in Kotlin 1.4+.
+        graph[currentNode]
+            .filter {
+                distances[it] == -1
+            }
+            .forEach {
+                distances[it] = distances[currentNode] + edgeLength
+                nodesToVisit.add(it)
+            }
+    }
+    return distances.filterIndexed { i, _ -> i != s }
+}
+
+fun main() {
     repeat(readLine().orEmpty().toInt()) {
         val (n, m) = readLine().orEmpty().split(' ').map(String::toInt)
         val graph = List(n) { mutableSetOf<Int>() }
@@ -13,21 +32,6 @@ fun main() {
             graph[v].add(u)
         }
         val s = readLine().orEmpty().toInt() - 1 // converts to zero-based numbering.
-        val distances = IntArray(n) { -1 }.apply {
-            this[s] = 0
-        }
-        val nodesToVisit = mutableListOf(s)
-        while (nodesToVisit.isNotEmpty()) {
-            val currentNode = nodesToVisit.removeAt(0) // TODO: Use removeFirst() in Kotlin 1.4+.
-            graph[currentNode]
-                .filter {
-                    distances[it] == -1
-                }
-                .forEach {
-                    distances[it] = distances[currentNode] + edgeLength
-                    nodesToVisit.add(it)
-                }
-        }
-        println(distances.filterIndexed { i, _ -> i != s }.joinToString(" "))
+        println(bfs(graph, s).joinToString(" "))
     }
 }
