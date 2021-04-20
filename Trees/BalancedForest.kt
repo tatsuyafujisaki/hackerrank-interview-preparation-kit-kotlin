@@ -1,4 +1,6 @@
-data class Vertex(val ancestors: List<Int>, val children: Set<Int>, val subtreeData: Long)
+data class Vertex(val ancestors: List<Int>, val children: List<Int>, val subtreeData: Long) {
+    val isRoot get() = ancestors.isEmpty()
+}
 
 fun findRootOfMinHeightTree(graph: List<Set<Int>>): Set<Int> {
     // Early return if the graph has only one vertex because the rest of findRootOfMinHeightTree() mistakenly returns an empty set in the scenario.
@@ -27,10 +29,10 @@ fun convertGraphToTree(graph: List<Set<Int>>, data: List<Int>, root: Int): List<
 
     fun visitVertex(id: Int, parent: Int) {
         ancestors[id] = if (parent == -1) emptyList() else listOf(parent) + ancestors[parent]
-        val children = graph[id].filter { it != root && ancestors[it].isEmpty() }.toSet()
+        val children = graph[id].filter { it != root && ancestors[it].isEmpty() }
         for (child in children) visitVertex(child, id)
         val subtreeData = data[id] + children.map { vertices[it]!!.subtreeData }.sum()
-        vertices[id] = Vertex(ancestors[id], children, subtreeData)
+        vertices[id] = Vertex(ancestors[id], children.sortedBy { vertices[it]!!.subtreeData }, subtreeData)
     }
 
     visitVertex(root, -1)
@@ -75,8 +77,8 @@ fun balancedForest(graph: List<Set<Int>>, c: List<Int>): Long {
         }
     }
 
-    for (i in graph.indices.filter { it != root }) {
-        val (smallerTree, biggerTree) = if (vertices[i].subtreeData * 2 < totalData) {
+    for (i in smallerTrees.indices.filter { it != root }) {
+        val (smallerTree, largerTree) = if (vertices[i].subtreeData * 2 < totalData) {
             vertices[i].subtreeData to totalData - vertices[i].subtreeData
         } else if (totalData < vertices[i].subtreeData * 2) {
             totalData - vertices[i].subtreeData to vertices[i].subtreeData
@@ -86,11 +88,11 @@ fun balancedForest(graph: List<Set<Int>>, c: List<Int>): Long {
         }
 
         if (
-            smallerTree * 2 < biggerTree && biggerTree % 2 == 1L ||
+            smallerTree * 2 < largerTree && largerTree % 2 == 1L ||
             dataToAdd != Long.MAX_VALUE && (smallerTree + dataToAdd) * 3 < totalData
         ) continue
 
-        for (j in i + 1 until graph.size) {
+        for (j in i + 1 until vertices.size) {
             when (findLCA(ancestors, i, j)) {
                 i -> {
                     val data1 = vertices[i].subtreeData - vertices[j].subtreeData
@@ -121,6 +123,7 @@ fun main() {
         val n = readLine().orEmpty().toInt()
         val c = readLine().orEmpty().split(' ').map(String::toInt)
         val graph = List(n) { mutableSetOf<Int>() }
+
         repeat(n - 1) {
             val (v1, v2) = readLine()
                 .orEmpty()
