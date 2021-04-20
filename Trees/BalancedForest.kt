@@ -123,7 +123,6 @@ fun main() {
         val n = readLine().orEmpty().toInt()
         val c = readLine().orEmpty().split(' ').map(String::toInt)
         val graph = List(n) { mutableSetOf<Int>() }
-
         repeat(n - 1) {
             val (v1, v2) = readLine()
                 .orEmpty()
