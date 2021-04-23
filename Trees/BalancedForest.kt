@@ -1,5 +1,3 @@
-import util.SimulatedStandardInput
-
 val Long.isOdd get() = this % 2 == 1L
 
 data class Vertex(val ancestors: List<Int>, val children: List<Int>, val subtreeSum: Long)
@@ -108,8 +106,6 @@ fun balancedForest(graph: List<List<Int>>, c: List<Int>): Long {
 }
 
 fun main() {
-    val stdin = SimulatedStandardInput("input04.txt")
-    fun readLine() = stdin.readLine()
     repeat(readLine().orEmpty().toInt()) {
         val n = readLine().orEmpty().toInt()
         val c = readLine().orEmpty().split(' ').map(String::toInt)
