@@ -1,6 +1,7 @@
-data class Vertex(val ancestors: List<Int>, val children: List<Int>, val subtreeData: Long) {
-    val isRoot get() = ancestors.isEmpty()
-}
+val Long.isOdd get() = this % 2 == 1L
+fun <K, V : Comparable<V>> Map<K, V>.sortedByValue() = toList().sortedBy { it.second }.toMap()
+
+data class Vertex(val ancestors: List<Int>, val children: List<Int>, val subtreeSum: Long)
 
 fun findRootOfMinHeightTree(graph: List<Set<Int>>): Set<Int> {
     // Early return if the graph has only one vertex because the rest of findRootOfMinHeightTree() mistakenly returns an empty set in the scenario.
@@ -23,99 +24,83 @@ fun findRootOfMinHeightTree(graph: List<Set<Int>>): Set<Int> {
 }
 
 fun convertGraphToTree(graph: List<Set<Int>>, data: List<Int>, root: Int): List<Vertex> {
-    val n = graph.size
-    val ancestors = Array<List<Int>>(n) { emptyList() }
-    val vertices = Array<Vertex?>(n) { null }
+    val ancestors = Array<List<Int>>(graph.size) { emptyList() }
+    val vertices = Array<Vertex?>(graph.size) { null }
 
     fun visitVertex(id: Int, parent: Int) {
         ancestors[id] = if (parent == -1) emptyList() else listOf(parent) + ancestors[parent]
         val children = graph[id].filter { it != root && ancestors[it].isEmpty() }
         for (child in children) visitVertex(child, id)
-        val subtreeData = data[id] + children.map { vertices[it]!!.subtreeData }.sum()
-        vertices[id] = Vertex(ancestors[id], children.sortedBy { vertices[it]!!.subtreeData }, subtreeData)
+        val subtreeData = data[id] + children.map { vertices[it]!!.subtreeSum }.sum()
+        vertices[id] = Vertex(ancestors[id], children.sortedBy { vertices[it]!!.subtreeSum }, subtreeData)
     }
 
     visitVertex(root, -1)
     return vertices.filterNotNull()
 }
 
-fun findLCA(ancestors: List<List<Int>>, vertex1: Int, vertex2: Int): Int {
-    var v1 = vertex1
-    var v2 = vertex2
-    while (ancestors[v1].size != ancestors[v2].size) {
-        if (ancestors[v1].size < ancestors[v2].size) {
-            v2 = ancestors[v2].first()
-        } else {
-            v1 = ancestors[v1].first()
-        }
-    }
-    while (v1 != v2) {
-        v1 = ancestors[v1].first()
-        v2 = ancestors[v2].first()
-    }
-    return v1
-}
-
 fun balancedForest(graph: List<Set<Int>>, c: List<Int>): Long {
     val root = findRootOfMinHeightTree(graph).first()
     val vertices = convertGraphToTree(graph, c, root)
-    val ancestors = vertices.map { it.ancestors }
-    var dataToAdd = Long.MAX_VALUE
-    val totalData = vertices[root].subtreeData
+    val sortedAncestors = vertices.map { it.ancestors.sorted() }
+    var extraMin = Long.MAX_VALUE
+    val totalSum = vertices[root].subtreeSum
 
-    fun tryUpdateDataToAdd(candidate: Long) {
-        if (candidate < dataToAdd) dataToAdd = candidate
+    fun tryUpdateMinExtra(candidate: Long) {
+        if (candidate < extraMin) extraMin = candidate
     }
 
-    fun tryUpdateDataToAdd(data1: Long, data2: Long, data3: Long) {
-        if (data1 == data2 && data3 <= data1) {
-            tryUpdateDataToAdd(data1 - data3)
-        } else if (data1 == data3 && data2 <= data1) {
-            tryUpdateDataToAdd(data1 - data2)
-        } else if (data2 == data3 && data1 <= data2) {
-            tryUpdateDataToAdd(data2 - data1)
+    fun tryUpdateMinExtra(tree1: Long, tree2: Long, tree3: Long) {
+        if (tree1 == tree2 && tree3 <= tree1) {
+            tryUpdateMinExtra(tree1 - tree3)
+        } else if (tree1 == tree3 && tree2 <= tree1) {
+            tryUpdateMinExtra(tree1 - tree2)
+        } else if (tree2 == tree3 && tree1 <= tree2) {
+            tryUpdateMinExtra(tree2 - tree1)
         }
     }
 
-    for (i in smallerTrees.indices.filter { it != root }) {
-        val (smallerTree, largerTree) = if (vertices[i].subtreeData * 2 < totalData) {
-            vertices[i].subtreeData to totalData - vertices[i].subtreeData
-        } else if (totalData < vertices[i].subtreeData * 2) {
-            totalData - vertices[i].subtreeData to vertices[i].subtreeData
-        } else {
-            tryUpdateDataToAdd(vertices[i].subtreeData)
+    for (i in vertices.indices.filter { it != root }) {
+        val subtreeSum = vertices[i].subtreeSum
+        val complementSum = totalSum - subtreeSum
+
+        if (2 * subtreeSum == totalSum) {
+            tryUpdateMinExtra(subtreeSum)
             continue
         }
 
-        if (
-            smallerTree * 2 < largerTree && largerTree % 2 == 1L ||
-            dataToAdd != Long.MAX_VALUE && (smallerTree + dataToAdd) * 3 < totalData
-        ) continue
+        val (smallerTree, largerTree) = if (2 * subtreeSum < totalSum) {
+            subtreeSum to complementSum
+        } else {
+            complementSum to subtreeSum
+        }
+
+        if (smallerTree * 2 < largerTree && largerTree.isOdd || extraMin < largerTree / 2 - smallerTree) continue
 
         for (j in i + 1 until vertices.size) {
-            when (findLCA(ancestors, i, j)) {
-                i -> {
-                    val data1 = vertices[i].subtreeData - vertices[j].subtreeData
-                    val data2 = vertices[j].subtreeData
-                    val data3 = totalData - vertices[i].subtreeData
-                    tryUpdateDataToAdd(data1, data2, data3)
-                }
-                j -> {
-                    val data1 = vertices[i].subtreeData
-                    val data2 = vertices[j].subtreeData - vertices[i].subtreeData
-                    val data3 = totalData - vertices[j].subtreeData
-                    tryUpdateDataToAdd(data1, data2, data3)
-                }
-                else -> {
-                    val data1 = vertices[i].subtreeData
-                    val data2 = vertices[j].subtreeData
-                    val data3 = totalData - data1 - data2
-                    tryUpdateDataToAdd(data1, data2, data3)
-                }
+            val subtreeSum2 = vertices[j].subtreeSum
+            when {
+                sortedAncestors[i].binarySearch(j) >= 0 ->
+                    tryUpdateMinExtra(
+                        subtreeSum,
+                        subtreeSum2 - subtreeSum,
+                        totalSum - subtreeSum2
+                    )
+                sortedAncestors[j].binarySearch(i) >= 0 ->
+                    tryUpdateMinExtra(
+                        subtreeSum - subtreeSum2,
+                        subtreeSum2,
+                        totalSum - subtreeSum
+                    )
+                else -> tryUpdateMinExtra(
+                    subtreeSum,
+                    subtreeSum2,
+                    totalSum - subtreeSum - subtreeSum2
+                )
             }
         }
     }
-    return if (dataToAdd == Long.MAX_VALUE) -1 else dataToAdd
+    return if (extraMin == Long.MAX_VALUE) -1 else extraMin
 }
 
 fun main() {
@@ -132,6 +117,6 @@ fun main() {
             graph[v1].add(v2)
             graph[v2].add(v1)
         }
-        println(balancedForest(graph.map { it.toSet() }, c))
+        println(balancedForest(graph, c))
     }
 }
