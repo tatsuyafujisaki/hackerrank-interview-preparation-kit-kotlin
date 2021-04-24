@@ -96,15 +96,11 @@ class FastScanner : Closeable {
     fun nextInt() = next().toInt()
     private fun nextZeroBasedInt() = next().toInt() - 1
 
-    fun nextIntegers(n: Int): IntArray {
-        val xs = IntArray(n)
-        for (i in 0 until n) xs[i] = nextInt()
-        return xs
+    fun nextIntegers(n: Int) = IntArray(n) {
+        nextInt()
     }
 
-    fun nextZeroBasedIntegers(n: Int): IntArray {
-        val xs = IntArray(n)
-        for (i in 0 until n) xs[i] = nextZeroBasedInt()
-        return xs
+    fun nextZeroBasedIntegers(n: Int) = IntArray(n) {
+        nextZeroBasedInt()
     }
 }
