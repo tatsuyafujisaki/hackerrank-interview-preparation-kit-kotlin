@@ -51,22 +51,26 @@ fun balancedForest(graph: List<List<Int>>, c: List<Int>): Long {
             val smallerTree = vertices[i].subtreeSum
             if ((totalSum - smallerTree).isEven) {
                 val twinLargerTree = (totalSum - smallerTree) / 2
-                if (ancestors.binarySearch(twinLargerTree + smallerTree) >= 0 ||
-                    subtreeSums.count(twinLargerTree).let {
-                        it >= 2 || it >= 1 && ancestors.binarySearch(twinLargerTree) < 0
+                if (twinLargerTree - smallerTree < minExtra) {
+                    if (ancestors.binarySearch(twinLargerTree + smallerTree) >= 0 ||
+                        subtreeSums.count(twinLargerTree).let {
+                            it >= 2 || it >= 1 && ancestors.binarySearch(twinLargerTree) < 0
+                        }
+                    ) {
+                        tryUpdateMinExtra(twinLargerTree, smallerTree)
                     }
-                ) {
-                    tryUpdateMinExtra(twinLargerTree, smallerTree)
                 }
             }
         } else {
             val twinLargerTree = vertices[i].subtreeSum
             val smallerTree = totalSum - 2 * twinLargerTree
-            if (ancestors.binarySearch(2 * twinLargerTree) >= 0 ||
-                ancestors.binarySearch(twinLargerTree + smallerTree) >= 0 ||
-                subtreeSums.count(twinLargerTree) >= 2
-            ) {
-                tryUpdateMinExtra(twinLargerTree, smallerTree)
+            if (twinLargerTree - smallerTree < minExtra) {
+                if (ancestors.binarySearch(2 * twinLargerTree) >= 0 ||
+                    ancestors.binarySearch(twinLargerTree + smallerTree) >= 0 ||
+                    subtreeSums.count(twinLargerTree) >= 2
+                ) {
+                    tryUpdateMinExtra(twinLargerTree, smallerTree)
+                }
             }
         }
     }
