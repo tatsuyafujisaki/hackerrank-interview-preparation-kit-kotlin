@@ -34,25 +34,26 @@ fun balancedForest(graph: List<List<Int>>, c: IntArray): Long {
     graph.first().forEach { visitVertex(it, 0) }
     subtreeSums[0] = c[0] + graph[0].map { subtreeSums[it] }.sum()
     val totalSum = subtreeSums.first()
-    val sortedSubtreeSums = subtreeSums.sortedArray()
+    val sortedSubtreeSums = subtreeSums.sortedArray() // to use binary search to avoid Time Limit Exceeded.
     for (i in 1 until graph.size) {
-        val ancestorsOfCurrentVertex = ancestors[i].map { subtreeSums[it] }
+        val subtreeSumsOfAncestors =
+            ancestors[i].map { subtreeSums[it] } // ancestors are sorted by subtreeSum by nature.
         if (3 * subtreeSums[i] < totalSum) {
             val smallerTree = subtreeSums[i]
             if ((totalSum - smallerTree) % 2 == 0L) {
                 val twinLargerTree = (totalSum - smallerTree) / 2
-                if (ancestorsOfCurrentVertex.binarySearch(twinLargerTree + smallerTree) >= 0 ||
+                if (subtreeSumsOfAncestors.binarySearch(twinLargerTree + smallerTree) >= 0 ||
                     sortedSubtreeSums.count(twinLargerTree).let {
                         // If there are two vertices of the same subtreeSum, it is guaranteed that they are not in a parent-child relationship.
-                        it >= 2 || it >= 1 && ancestorsOfCurrentVertex.binarySearch(twinLargerTree) < 0
+                        it >= 2 || it >= 1 && subtreeSumsOfAncestors.binarySearch(twinLargerTree) < 0
                     }
                 ) tryUpdateMinExtra(twinLargerTree, smallerTree)
             }
         } else {
             val twinLargerTree = subtreeSums[i]
             val smallerTree = totalSum - 2 * twinLargerTree
-            if (ancestorsOfCurrentVertex.binarySearch(2 * twinLargerTree) >= 0 ||
-                ancestorsOfCurrentVertex.binarySearch(twinLargerTree + smallerTree) >= 0 ||
+            if (subtreeSumsOfAncestors.binarySearch(2 * twinLargerTree) >= 0 ||
+                subtreeSumsOfAncestors.binarySearch(twinLargerTree + smallerTree) >= 0 ||
                 // If there are two vertices of the same subtreeSum, it is guaranteed that they are not in a parent-child relationship.
                 sortedSubtreeSums.count(twinLargerTree) >= 2
             ) tryUpdateMinExtra(twinLargerTree, smallerTree)
