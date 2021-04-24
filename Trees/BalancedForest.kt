@@ -2,25 +2,6 @@ val Long.isEven get() = this % 2 == 0L
 
 data class Vertex(val ancestors: List<Int>, val children: List<Int>, val subtreeSum: Long)
 
-fun findRootOfMinHeightTree(graph: List<List<Int>>): Set<Int> {
-    if (graph.size == 1) return setOf(0)
-    var remainingVertices = graph.size
-    val degrees = graph.map { it.size }.toMutableList()
-    val leaves = graph.indices.filter { graph[it].size == 1 }.toMutableList()
-    while (remainingVertices > 2) {
-        val leafCount = leaves.size
-        remainingVertices -= leaves.size
-        repeat(leafCount) {
-            val leaf = leaves.removeAt(0)
-            for (semiLeaf in graph[leaf]) {
-                degrees[semiLeaf]--
-                if (degrees[semiLeaf] == 1) leaves.add(semiLeaf)
-            }
-        }
-    }
-    return leaves.toSet()
-}
-
 fun convertGraphToTree(graph: List<List<Int>>, data: List<Int>, root: Int): List<Vertex> {
     val ancestors = Array<List<Int>>(graph.size) { emptyList() }
     val vertices = Array<Vertex?>(graph.size) { null }
@@ -39,7 +20,7 @@ fun convertGraphToTree(graph: List<List<Int>>, data: List<Int>, root: Int): List
     return vertices.filterNotNull()
 }
 
-fun <T : Comparable<T>> List<T?>.count(element: T): Int {
+fun <T : Comparable<T>> List<T>.count(element: T): Int {
     val i = binarySearch(element)
     if (i < 0) return 0
     var j = i
@@ -60,12 +41,11 @@ fun balancedForest(graph: List<List<Int>>, c: List<Int>): Long {
         }
     }
 
-    val root = findRootOfMinHeightTree(graph).first()
-    val vertices = convertGraphToTree(graph, c, root)
+    val vertices = convertGraphToTree(graph, c, 0)
     val subtreeSums = vertices.map { it.subtreeSum }.sorted()
-    val totalSum = vertices[root].subtreeSum
+    val totalSum = vertices.first().subtreeSum
 
-    for (i in vertices.indices.filter { it != root }) {
+    for (i in 1 until vertices.size) {
         val ancestors = vertices[i].ancestors.map { vertices[it].subtreeSum }
         if (3 * vertices[i].subtreeSum < totalSum) {
             val smallerTree = vertices[i].subtreeSum
