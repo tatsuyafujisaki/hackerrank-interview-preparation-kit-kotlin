@@ -1,8 +1,11 @@
+import java.io.PrintWriter
+import java.util.StringTokenizer
+
 val Long.isEven get() = this % 2 == 0L
 
 data class Vertex(val ancestors: List<Int>, val children: List<Int>, val subtreeSum: Long)
 
-fun convertGraphToTree(graph: List<List<Int>>, data: List<Int>, root: Int): List<Vertex> {
+fun convertGraphToTree(graph: List<List<Int>>, data: IntArray, root: Int): List<Vertex> {
     val ancestors = Array<List<Int>>(graph.size) { emptyList() }
     val vertices = Array<Vertex?>(graph.size) { null }
 
@@ -31,7 +34,7 @@ fun <T : Comparable<T>> List<T>.count(element: T): Int {
     return count
 }
 
-fun balancedForest(graph: List<List<Int>>, c: List<Int>): Long {
+fun balancedForest(graph: List<List<Int>>, c: IntArray): Long {
     var minExtra = Long.MAX_VALUE
 
     fun tryUpdateMinExtra(twinLargerTree: Long, smallerTree: Long) {
@@ -78,20 +81,54 @@ fun balancedForest(graph: List<List<Int>>, c: List<Int>): Long {
     return if (minExtra == Long.MAX_VALUE) -1 else minExtra
 }
 
+
 fun main() {
-    repeat(readLine().orEmpty().toInt()) {
-        val n = readLine().orEmpty().toInt()
-        val c = readLine().orEmpty().split(' ').map(String::toInt)
+    val pw = PrintWriter(System.out, false /* disables autoFlush to write at once */)
+    repeat(FastScanner.nextInt()) {
+        val n = FastScanner.nextInt()
+        val c = FastScanner.nextIntegers(n)
         val graph = List(n) { mutableListOf<Int>() }
         repeat(n - 1) {
-            val (v1, v2) = readLine()
-                .orEmpty()
-                .split(' ')
-                .map(String::toInt)
-                .map { it - 1 } // converts to zero-based numbering.
+            val (v1, v2) = FastScanner.nextZeroBasedIntegers(2)
             graph[v1].add(v2)
             graph[v2].add(v1)
         }
-        println(balancedForest(graph, c))
+        pw.println(balancedForest(graph, c))
+    }
+    FastScanner.close()
+    pw.close()
+}
+
+object FastScanner {
+    private val br = System.`in`.bufferedReader()
+    private var st = StringTokenizer("")
+
+    private fun next(): String {
+        while (!st.hasMoreTokens()) st = StringTokenizer(br.readLine())
+        return st.nextToken()
+    }
+
+    fun nextInt(): Int {
+        return next().toInt()
+    }
+
+    private fun nextZeroBasedInt(): Int {
+        return next().toInt() - 1
+    }
+
+    fun nextIntegers(n: Int): IntArray {
+        val xs = IntArray(n)
+        for (i in 0 until n) xs[i] = nextInt()
+        return xs
+    }
+
+    fun nextZeroBasedIntegers(n: Int): IntArray {
+        val xs = IntArray(n)
+        for (i in 0 until n) xs[i] = nextZeroBasedInt()
+        return xs
+    }
+
+    fun close() {
+        br.close()
     }
 }
