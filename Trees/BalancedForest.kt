@@ -3,7 +3,7 @@ import java.util.StringTokenizer
 
 val Long.isEven get() = this % 2 == 0L
 
-data class Vertex(val ancestors: List<Int>, val children: List<Int>, val subtreeSum: Long)
+data class Vertex(val ancestors: List<Int>, val subtreeSum: Long)
 
 fun convertGraphToTree(graph: List<List<Int>>, data: IntArray, root: Int): List<Vertex> {
     val ancestors = Array<List<Int>>(graph.size) { emptyList() }
@@ -14,12 +14,12 @@ fun convertGraphToTree(graph: List<List<Int>>, data: IntArray, root: Int): List<
         val children = graph[id].filter { parent != it }
         for (child in children) visitVertex(child, id)
         val subtreeData = data[id] + children.map { vertices[it]!!.subtreeSum }.sum()
-        vertices[id] = Vertex(ancestors[id], children, subtreeData)
+        vertices[id] = Vertex(ancestors[id], subtreeData)
     }
 
     for (child in graph[root]) visitVertex(child, root)
     val subtreeData = data[root] + graph[root].map { vertices[it]!!.subtreeSum }.sum()
-    vertices[root] = Vertex(ancestors[root], graph[root], subtreeData)
+    vertices[root] = Vertex(ancestors[root], subtreeData)
     return vertices.filterNotNull()
 }
 
