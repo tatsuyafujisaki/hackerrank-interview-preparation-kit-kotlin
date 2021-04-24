@@ -24,11 +24,11 @@ fun balancedForest(graph: List<List<Int>>, c: IntArray): Long {
     val ancestors = Array<List<Int>>(graph.size) { emptyList() }
     val subtreeSums = LongArray(graph.size)
 
-    fun visitVertex(id: Int, parent: Int) {
-        ancestors[id] = listOf(parent) + ancestors[parent]
-        val children = graph[id].filter { parent != it }
-        for (child in children) visitVertex(child, id)
-        subtreeSums[id] = c[id] + children.map { subtreeSums[it] }.sum()
+    fun visitVertex(i: Int, parent: Int) {
+        ancestors[i] = listOf(parent) + ancestors[parent]
+        val children = graph[i].filter { parent != it }
+        for (child in children) visitVertex(child, i)
+        subtreeSums[i] = c[i] + children.map { subtreeSums[it] }.sum()
     }
 
     graph.first().forEach { visitVertex(it, 0) }
