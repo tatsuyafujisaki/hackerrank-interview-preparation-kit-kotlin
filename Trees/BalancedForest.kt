@@ -1,9 +1,10 @@
 import java.io.PrintWriter
 import java.util.StringTokenizer
+import kotlin.math.min
 
 val Long.isEven get() = this % 2 == 0L
 
-data class Vertex(val ancestors: List<Int>, val subtreeSum: Long)
+class Vertex(val ancestors: List<Int>, val subtreeSum: Long)
 
 fun convertGraphToTree(graph: List<List<Int>>, data: IntArray, root: Int): List<Vertex> {
     val ancestors = Array<List<Int>>(graph.size) { emptyList() }
@@ -13,13 +14,11 @@ fun convertGraphToTree(graph: List<List<Int>>, data: IntArray, root: Int): List<
         ancestors[id] = listOf(parent) + ancestors[parent]
         val children = graph[id].filter { parent != it }
         for (child in children) visitVertex(child, id)
-        val subtreeData = data[id] + children.map { vertices[it]!!.subtreeSum }.sum()
-        vertices[id] = Vertex(ancestors[id], subtreeData)
+        vertices[id] = Vertex(ancestors[id], data[id] + children.map { vertices[it]!!.subtreeSum }.sum())
     }
 
     for (child in graph[root]) visitVertex(child, root)
-    val subtreeData = data[root] + graph[root].map { vertices[it]!!.subtreeSum }.sum()
-    vertices[root] = Vertex(ancestors[root], subtreeData)
+    vertices[root] = Vertex(ancestors[root], data[root] + graph[root].map { vertices[it]!!.subtreeSum }.sum())
     return vertices.filterNotNull()
 }
 
@@ -37,17 +36,13 @@ fun <T : Comparable<T>> List<T>.count(element: T): Int {
 fun balancedForest(graph: List<List<Int>>, c: IntArray): Long {
     var minExtra = Long.MAX_VALUE
 
-    fun tryUpdateMinExtra(twinLargerTree: Long, smallerTree: Long) {
-        if (smallerTree <= twinLargerTree) {
-            val candidate = twinLargerTree - smallerTree
-            if (candidate < minExtra) minExtra = candidate
-        }
+    fun tryUpdateMinExtra(twinTree: Long, thirdTree: Long) {
+        if (thirdTree <= twinTree) minExtra = min(minExtra, twinTree - thirdTree)
     }
 
     val vertices = convertGraphToTree(graph, c, 0)
     val subtreeSums = vertices.map { it.subtreeSum }.sorted()
     val totalSum = vertices.first().subtreeSum
-
     for (i in 1 until vertices.size) {
         val ancestors = vertices[i].ancestors.map { vertices[it].subtreeSum }
         if (3 * vertices[i].subtreeSum < totalSum) {
@@ -57,6 +52,7 @@ fun balancedForest(graph: List<List<Int>>, c: IntArray): Long {
                 if (twinLargerTree - smallerTree < minExtra) {
                     if (ancestors.binarySearch(twinLargerTree + smallerTree) >= 0 ||
                         subtreeSums.count(twinLargerTree).let {
+                            // If there are two vertices of the same subtreeSum, it is guaranteed that they are not in a parent-child relationship.
                             it >= 2 || it >= 1 && ancestors.binarySearch(twinLargerTree) < 0
                         }
                     ) {
@@ -70,6 +66,7 @@ fun balancedForest(graph: List<List<Int>>, c: IntArray): Long {
             if (twinLargerTree - smallerTree < minExtra) {
                 if (ancestors.binarySearch(2 * twinLargerTree) >= 0 ||
                     ancestors.binarySearch(twinLargerTree + smallerTree) >= 0 ||
+                    // If there are two vertices of the same subtreeSum, it is guaranteed that they are not in a parent-child relationship.
                     subtreeSums.count(twinLargerTree) >= 2
                 ) {
                     tryUpdateMinExtra(twinLargerTree, smallerTree)
@@ -77,7 +74,6 @@ fun balancedForest(graph: List<List<Int>>, c: IntArray): Long {
             }
         }
     }
-
     return if (minExtra == Long.MAX_VALUE) -1 else minExtra
 }
 
@@ -107,13 +103,8 @@ object FastScanner {
         return st.nextToken()
     }
 
-    fun nextInt(): Int {
-        return next().toInt()
-    }
-
-    private fun nextZeroBasedInt(): Int {
-        return next().toInt() - 1
-    }
+    fun nextInt() = next().toInt()
+    private fun nextZeroBasedInt() = next().toInt() - 1
 
     fun nextIntegers(n: Int): IntArray {
         val xs = IntArray(n)
