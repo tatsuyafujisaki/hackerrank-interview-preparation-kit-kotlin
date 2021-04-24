@@ -81,7 +81,6 @@ fun balancedForest(graph: List<List<Int>>, c: IntArray): Long {
     return if (minExtra == Long.MAX_VALUE) -1 else minExtra
 }
 
-
 fun main() {
     val pw = PrintWriter(System.out, false /* disables autoFlush to write at once */)
     repeat(FastScanner.nextInt()) {
