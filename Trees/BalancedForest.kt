@@ -1,3 +1,4 @@
+import java.io.Closeable
 import java.io.PrintWriter
 import java.util.StringTokenizer
 import kotlin.math.min
@@ -62,25 +63,30 @@ fun balancedForest(graph: List<List<Int>>, c: IntArray): Long {
 }
 
 fun main() {
-    val pw = PrintWriter(System.out, false /* disables autoFlush to write at once */)
-    repeat(FastScanner.nextInt()) {
-        val n = FastScanner.nextInt()
-        val c = FastScanner.nextIntegers(n)
-        val graph = List(n) { mutableListOf<Int>() }
-        repeat(n - 1) {
-            val (v1, v2) = FastScanner.nextZeroBasedIntegers(2)
-            graph[v1].add(v2)
-            graph[v2].add(v1)
+    FastScanner().use { fs ->
+        PrintWriter(System.out, false /* writes at once */).use { pw ->
+            repeat(fs.nextInt()) {
+                val n = fs.nextInt()
+                val c = fs.nextIntegers(n)
+                val graph = List(n) { mutableListOf<Int>() }
+                repeat(n - 1) {
+                    val (v1, v2) = fs.nextZeroBasedIntegers(2)
+                    graph[v1].add(v2)
+                    graph[v2].add(v1)
+                }
+                pw.println(balancedForest(graph, c))
+            }
         }
-        pw.println(balancedForest(graph, c))
     }
-    FastScanner.close()
-    pw.close()
 }
 
-object FastScanner {
+class FastScanner : Closeable {
     private val br = System.`in`.bufferedReader()
     private var st = StringTokenizer("")
+
+    override fun close() {
+        br.close()
+    }
 
     private fun next(): String {
         while (!st.hasMoreTokens()) st = StringTokenizer(br.readLine())
@@ -100,9 +106,5 @@ object FastScanner {
         val xs = IntArray(n)
         for (i in 0 until n) xs[i] = nextZeroBasedInt()
         return xs
-    }
-
-    fun close() {
-        br.close()
     }
 }
