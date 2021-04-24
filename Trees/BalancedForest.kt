@@ -2,27 +2,7 @@ import java.io.PrintWriter
 import java.util.StringTokenizer
 import kotlin.math.min
 
-val Long.isEven get() = this % 2 == 0L
-
-class Vertex(val ancestors: List<Int>, val subtreeSum: Long)
-
-fun convertGraphToTree(graph: List<List<Int>>, data: IntArray, root: Int): List<Vertex> {
-    val ancestors = Array<List<Int>>(graph.size) { emptyList() }
-    val vertices = Array<Vertex?>(graph.size) { null }
-
-    fun visitVertex(id: Int, parent: Int) {
-        ancestors[id] = listOf(parent) + ancestors[parent]
-        val children = graph[id].filter { parent != it }
-        for (child in children) visitVertex(child, id)
-        vertices[id] = Vertex(ancestors[id], data[id] + children.map { vertices[it]!!.subtreeSum }.sum())
-    }
-
-    for (child in graph[root]) visitVertex(child, root)
-    vertices[root] = Vertex(ancestors[root], data[root] + graph[root].map { vertices[it]!!.subtreeSum }.sum())
-    return vertices.filterNotNull()
-}
-
-fun <T : Comparable<T>> List<T>.count(element: T): Int {
+fun LongArray.count(element: Long): Int {
     val i = binarySearch(element)
     if (i < 0) return 0
     var j = i
@@ -40,20 +20,33 @@ fun balancedForest(graph: List<List<Int>>, c: IntArray): Long {
         if (thirdTree <= twinTree) minExtra = min(minExtra, twinTree - thirdTree)
     }
 
-    val vertices = convertGraphToTree(graph, c, 0)
-    val subtreeSums = vertices.map { it.subtreeSum }.sorted()
-    val totalSum = vertices.first().subtreeSum
-    for (i in 1 until vertices.size) {
-        val ancestors = vertices[i].ancestors.map { vertices[it].subtreeSum }
-        if (3 * vertices[i].subtreeSum < totalSum) {
-            val smallerTree = vertices[i].subtreeSum
-            if ((totalSum - smallerTree).isEven) {
+    val ancestors = Array<List<Int>>(graph.size) { emptyList() }
+    val subtreeSums = LongArray(graph.size)
+
+    fun visitVertex(id: Int, parent: Int) {
+        ancestors[id] = listOf(parent) + ancestors[parent]
+        val children = graph[id].filter { parent != it }
+        for (child in children) visitVertex(child, id)
+        subtreeSums[id] = c[id] + children.map { subtreeSums[it] }.sum()
+    }
+
+    for (child in graph[0]) visitVertex(child, 0)
+    subtreeSums[0] = c[0] + graph[0].map { subtreeSums[it] }.sum()
+
+    val totalSum = subtreeSums[0]
+    val sortedSubtreeSums = subtreeSums.sortedArray()
+
+    for (i in 1 until graph.size) {
+        val ancestorsOfCurrentVertex = ancestors[i].map { subtreeSums[it] }
+        if (3 * subtreeSums[i] < totalSum) {
+            val smallerTree = subtreeSums[i]
+            if ((totalSum - smallerTree) % 2 == 0L) {
                 val twinLargerTree = (totalSum - smallerTree) / 2
                 if (twinLargerTree - smallerTree < minExtra) {
-                    if (ancestors.binarySearch(twinLargerTree + smallerTree) >= 0 ||
-                        subtreeSums.count(twinLargerTree).let {
+                    if (ancestorsOfCurrentVertex.binarySearch(twinLargerTree + smallerTree) >= 0 ||
+                        sortedSubtreeSums.count(twinLargerTree).let {
                             // If there are two vertices of the same subtreeSum, it is guaranteed that they are not in a parent-child relationship.
-                            it >= 2 || it >= 1 && ancestors.binarySearch(twinLargerTree) < 0
+                            it >= 2 || it >= 1 && ancestorsOfCurrentVertex.binarySearch(twinLargerTree) < 0
                         }
                     ) {
                         tryUpdateMinExtra(twinLargerTree, smallerTree)
@@ -61,13 +54,13 @@ fun balancedForest(graph: List<List<Int>>, c: IntArray): Long {
                 }
             }
         } else {
-            val twinLargerTree = vertices[i].subtreeSum
+            val twinLargerTree = subtreeSums[i]
             val smallerTree = totalSum - 2 * twinLargerTree
             if (twinLargerTree - smallerTree < minExtra) {
-                if (ancestors.binarySearch(2 * twinLargerTree) >= 0 ||
-                    ancestors.binarySearch(twinLargerTree + smallerTree) >= 0 ||
+                if (ancestorsOfCurrentVertex.binarySearch(2 * twinLargerTree) >= 0 ||
+                    ancestorsOfCurrentVertex.binarySearch(twinLargerTree + smallerTree) >= 0 ||
                     // If there are two vertices of the same subtreeSum, it is guaranteed that they are not in a parent-child relationship.
-                    subtreeSums.count(twinLargerTree) >= 2
+                    sortedSubtreeSums.count(twinLargerTree) >= 2
                 ) {
                     tryUpdateMinExtra(twinLargerTree, smallerTree)
                 }
