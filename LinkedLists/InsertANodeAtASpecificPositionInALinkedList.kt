@@ -3,7 +3,7 @@ fun insertNodeAtPosition(head: SinglyLinkedListNode?, data: Int, position: Int):
         next = head
     }
 } else {
-    head.apply {
+    head?.apply {
         next = insertNodeAtPosition(next, data, position - 1)
     }
 }
