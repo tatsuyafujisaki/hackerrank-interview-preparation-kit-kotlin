@@ -1,5 +1,5 @@
 /** 
- * I use Java for this problem because the unmodifiable code in the editor for Kotlin is incorrect.
+ * I fall back to Java instead of Kotlin for this problem because the unmodifiable code in the editor for Kotlin is incorrect.
  * It is expected to print each answer for each test case on a separate line, but it prints all the answers on the same line.
  */
 static DoublyLinkedListNode sortedInsert(DoublyLinkedListNode head, int data) {
