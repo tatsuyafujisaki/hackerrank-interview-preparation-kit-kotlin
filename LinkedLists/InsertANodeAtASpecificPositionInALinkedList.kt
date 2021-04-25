@@ -1,10 +1,9 @@
-fun insertNodeAtPosition(head: SinglyLinkedListNode?, data: Int, position: Int): SinglyLinkedListNode? {
-    val node = SinglyLinkedListNode(data)
-    if (position == 0) {
-        node.next = head
-        return node
+fun insertNodeAtPosition(head: SinglyLinkedListNode?, data: Int, position: Int): SinglyLinkedListNode? = if (position == 0) {
+    SinglyLinkedListNode(data).apply {
+        next = head
     }
-    return head?.apply {
+} else {
+    head?.apply {
         next = insertNodeAtPosition(next, data, position - 1)
     }
 }
