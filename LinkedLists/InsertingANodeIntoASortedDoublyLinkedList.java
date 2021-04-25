@@ -1,7 +1,7 @@
 /** 
- * Because the fixed code in Kotlin is incorrect, I fall back to Java 8.
- * The fixed code in Kotlin is expected to print each answer for each test case on a separate line, but it prints all the answers on the same line.
- */ 
+ * I use Java for this problem because the unmodifiable code in the editor for Kotlin is incorrect.
+ * It is expected to print each answer for each test case on a separate line, but it prints all the answers on the same line.
+ */
 static DoublyLinkedListNode sortedInsert(DoublyLinkedListNode head, int data) {
     DoublyLinkedListNode node = new DoublyLinkedListNode(data);
     if (head == null) return node;
