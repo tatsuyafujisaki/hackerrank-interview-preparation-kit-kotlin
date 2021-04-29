@@ -3,7 +3,7 @@ import kotlin.math.max
 fun maxCircle(queries: List<List<Int>>): List<Int> {
     val compress = queries.flatten().toSet().mapIndexed { i, x -> x to i }.toMap()
     val parents = IntArray(compress.size) { it }
-    val people = IntArray(compress.size) { 1 }
+    val circles = IntArray(compress.size) { 1 }
     val maxCircles = mutableListOf<Int>()
     var maxCircle = Int.MIN_VALUE
 
@@ -14,8 +14,8 @@ fun maxCircle(queries: List<List<Int>>): List<Int> {
         val yRoot = find(y)
         if (xRoot != yRoot) {
             parents[yRoot] = xRoot
-            people[xRoot] = people[xRoot] + people[yRoot]
-            maxCircle = max(maxCircle, people[xRoot])
+            circles[xRoot] = circles[xRoot] + circles[yRoot]
+            maxCircle = max(maxCircle, circles[xRoot])
         }
     }
 
