@@ -49,9 +49,7 @@ fun crosswordPuzzle(grid: List<CharArray>, initialWords: List<String>): List<Cha
 
 fun main() {
     crosswordPuzzle(
-        List(10) {
-            readLine().orEmpty().toCharArray()
-        },
+        List(10) { readLine().orEmpty().toCharArray() },
         readLine().orEmpty().split(';')
     )?.forEach {
         println(it.joinToString(""))
