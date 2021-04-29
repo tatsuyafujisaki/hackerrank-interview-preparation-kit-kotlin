@@ -2,13 +2,9 @@ class DisjointSets(n: Int, machines: List<Int>) {
     private val parents = IntArray(n) { it }
     private val ranks = IntArray(n)
 
-    val isInMachineComponent = BooleanArray(n).apply {
-        for (machine in machines) this[machine] = true
-    }
-
     /** Using the technique "path compression" */
-    fun findRoot(x: Int): Int {
-        if (parents[x] != x) parents[x] = findRoot(parents[x])
+    fun find(x: Int): Int {
+        if (parents[x] != x) parents[x] = find(parents[x])
         return parents[x]
     }
 
@@ -27,14 +23,18 @@ class DisjointSets(n: Int, machines: List<Int>) {
             }
         }
     }
+
+    val isInMachineComponent = BooleanArray(n).apply {
+        for (machine in machines) this[machine] = true
+    }
 }
 
 fun minTime(roads: List<List<Int>>, machines: List<Int>): Int {
     var totalTime = 0
     val disjointSets = DisjointSets(roads.size + 1 /* nodes = roads + 1 */, machines)
     roads.sortedByDescending { it[2] /* time */ }.forEach {
-        val root1 = disjointSets.findRoot(it[0])
-        val root2 = disjointSets.findRoot(it[1])
+        val root1 = disjointSets.find(it[0])
+        val root2 = disjointSets.find(it[1])
         val isCity1InMachineComponent = disjointSets.isInMachineComponent[root1]
         val isCity2InMachineComponent = disjointSets.isInMachineComponent[root2]
         if (isCity1InMachineComponent && isCity2InMachineComponent) {
