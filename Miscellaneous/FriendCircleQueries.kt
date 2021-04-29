@@ -4,7 +4,6 @@ fun maxCircle(queries: List<List<Int>>): List<Int> {
     val compress = queries.flatten().toSet().mapIndexed { i, x -> x to i }.toMap()
     val parents = IntArray(compress.size) { it }
     val circles = IntArray(compress.size) { 1 }
-    val maxCircles = mutableListOf<Int>()
     var maxCircle = Int.MIN_VALUE
 
     tailrec fun find(x: Int): Int = if (parents[x] == x) x else find(parents[x])
@@ -19,6 +18,7 @@ fun maxCircle(queries: List<List<Int>>): List<Int> {
         }
     }
 
+    val maxCircles = mutableListOf<Int>()
     for ((a, b) in queries) {
         union(compress[a]!!, compress[b]!!)
         maxCircles.add(maxCircle)
