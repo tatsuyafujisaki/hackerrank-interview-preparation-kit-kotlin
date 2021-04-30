@@ -1,13 +1,12 @@
-import kotlin.math.pow
-
 val Int.bits get() = toString(2).padStart(Int.SIZE_BITS, '0').map { it - '0' }
+fun pow2(n: Int) = 1 shl n
 
-class TrieNode<T> {
-    val children = Array<TrieNode<T>?>(2) { null }
+class TrieNode {
+    val children = Array<TrieNode?>(2) { null }
 }
 
 fun maxXor(arr: List<Int>, queries: List<Int>): List<Int> {
-    val root = TrieNode<Int>()
+    val root = TrieNode()
     for (x in arr) {
         var current = root
         for (bit in x.bits) {
@@ -21,9 +20,9 @@ fun maxXor(arr: List<Int>, queries: List<Int>): List<Int> {
         var result = 0
         for (i in 0 until Int.SIZE_BITS) {
             val bit = bits[i]
-            val inverted = (bit + 1) % 2
+            val inverted = 1 - bit
             if (current.children[inverted] != null) {
-                result += 2.0.pow(Int.SIZE_BITS - 1 - i).toInt()
+                result += pow2(Int.SIZE_BITS - 1 - i)
                 current = current.children[inverted]!!
             } else {
                 current = current.children[bit]!!
