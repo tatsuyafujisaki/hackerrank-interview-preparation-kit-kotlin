@@ -1,9 +1,10 @@
 val Int.bits get() = toString(2).padStart(Int.SIZE_BITS, '0').map { it - '0' }
-fun pow2(n: Int) = 1 shl n
 
 class TrieNode {
     val children = Array<TrieNode?>(2) { null }
 }
+
+fun pow2(n: Int) = 1 shl n
 
 fun maxXor(arr: List<Int>, queries: List<Int>): List<Int> {
     val root = TrieNode()
