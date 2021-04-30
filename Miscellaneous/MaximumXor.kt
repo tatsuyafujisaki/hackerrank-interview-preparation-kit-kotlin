@@ -1,10 +1,6 @@
 import kotlin.math.pow
 
-val Int.bits
-    get() = toString(2)
-        .padStart(Int.SIZE_BITS, '0')
-        .toCharArray()
-        .map { it - '0' }
+val Int.bits get() = toString(2).padStart(Int.SIZE_BITS, '0').map { it - '0' }
 
 class TrieNode<T> {
     val children = Array<TrieNode<T>?>(2) { null }
