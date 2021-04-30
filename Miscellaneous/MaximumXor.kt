@@ -1,6 +1,8 @@
 import java.io.PrintWriter
 
-class TrieNode<T>(val children: Array<TrieNode<T>?> = Array(2) { null })
+class TrieNode<T> {
+    val children = Array<TrieNode<T>?>(2) { null }
+}
 
 val pow2 = intArrayOf(
     1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024,
