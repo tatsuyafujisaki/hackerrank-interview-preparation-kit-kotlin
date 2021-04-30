@@ -1,22 +1,16 @@
 import java.io.PrintWriter
 
-class TrieNode<T> {
-    val children = Array<TrieNode<T>?>(2) { null }
-}
-
-val pow2 = intArrayOf(
-    1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024,
-    2048, 4096, 8192, 16384, 32768, 65536, 131072, 262144, 524288, 1048576,
-    2097152, 4194304, 8388608, 16777216, 33554432, 67108864, 134217728, 268435456, 536870912, 1073741824
-)
+val pow2 = intArrayOf(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304, 8388608, 16777216, 33554432, 67108864, 134217728, 268435456, 536870912, 1073741824)
 
 val Int.bits
     get() = toString(2)
         .padStart(Int.SIZE_BITS, '0')
         .toCharArray()
-        .map {
-            it - '0'
-        }
+        .map { it - '0' }
+
+class TrieNode<T> {
+    val children = Array<TrieNode<T>?>(2) { null }
+}
 
 fun insert(root: TrieNode<Int>, x: Int) {
     var current = root
