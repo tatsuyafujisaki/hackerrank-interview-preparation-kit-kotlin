@@ -4,8 +4,6 @@ class TrieNode {
 
 val Int.bits get() = toString(2).padStart(Int.SIZE_BITS, '0').map { it - '0' }
 
-fun pow2(n: Int) = 1 shl n
-
 fun maxXor(arr: List<Int>, queries: List<Int>): List<Int> {
     val root = TrieNode()
     for (x in arr) {
@@ -23,7 +21,7 @@ fun maxXor(arr: List<Int>, queries: List<Int>): List<Int> {
             val bit = bits[i]
             val inverted = 1 - bit
             if (current.children[inverted] != null) {
-                result += pow2(Int.SIZE_BITS - 1 - i)
+                result += 1 shl (Int.SIZE_BITS - 1 - i)
                 current = current.children[inverted]!!
             } else {
                 current = current.children[bit]!!
