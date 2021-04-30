@@ -1,4 +1,4 @@
-val String.digitSum get() = map { Character.getNumericValue(it).toLong() }.sum() // TODO: Use Char.digitToInt() in Kotlin 1.4.30+.
+val String.digitSum get() = map { (it - '0').toLong() }.sum()
 
 fun superDigit(n: String, k: Int): Int {
     tailrec fun solve(x: Long): Int = if (x < 10) x.toInt() else solve(x.toString().digitSum)
