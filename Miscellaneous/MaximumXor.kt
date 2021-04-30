@@ -1,8 +1,4 @@
-val pow2 = intArrayOf(
-    1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024,
-    2048, 4096, 8192, 16384, 32768, 65536, 131072, 262144, 524288, 1048576,
-    2097152, 4194304, 8388608, 16777216, 33554432, 67108864, 134217728, 268435456, 536870912, 1073741824
-)
+import kotlin.math.pow
 
 val Int.bits
     get() = toString(2)
@@ -31,7 +27,7 @@ fun maxXor(arr: List<Int>, queries: List<Int>): List<Int> {
             val bit = bits[i]
             val inverted = (bit + 1) % 2
             if (current.children[inverted] != null) {
-                result += pow2[Int.SIZE_BITS - 1 - i]
+                result += 2.0.pow(Int.SIZE_BITS - 1 - i).toInt()
                 current = current.children[inverted]!!
             } else {
                 current = current.children[bit]!!
