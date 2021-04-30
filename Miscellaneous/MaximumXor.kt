@@ -28,18 +28,18 @@ fun insert(root: TrieNode<Int>, x: Int) {
 
 fun search(root: TrieNode<Int>, query: Int): Int {
     var current = root
-    var count = 0
+    var result = 0
     for (i in 0 until Int.SIZE_BITS) {
         val bit = query.bits[i]
         val inverted = (bit + 1) % 2
-        if (current.children[inverted] != null) {
-            count += pow2[Int.SIZE_BITS - 1 - i]
+        if (current.children[inverted] == null) {
+            result += pow2[Int.SIZE_BITS - 1 - i]
             current = current.children[inverted]!!
         } else {
             current = current.children[bit]!!
         }
     }
-    return count
+    return result
 }
 
 fun maxXor(arr: List<Int>, queries: List<Int>): List<Int> {
