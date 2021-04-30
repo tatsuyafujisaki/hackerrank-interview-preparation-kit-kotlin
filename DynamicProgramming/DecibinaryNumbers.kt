@@ -1,7 +1,8 @@
 // https://allhackerranksolutionsbykaira.blogspot.com/2020/04/decibinary-numbers-hackerrank-solution.html
 const val maxD = 19 // See the editorial for details.
 const val maxS = 300000 // See the editorial for details.
-val pow2 = intArrayOf(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072, 262144)
+
+fun pow2(n: Int) = 1 shl n
 
 /** Equivalent of f(d, s) in the editorial */
 fun createF() = List(maxD + 1) { LongArray(maxS + 1) }.apply {
@@ -9,7 +10,7 @@ fun createF() = List(maxD + 1) { LongArray(maxS + 1) }.apply {
     for (d in 1..maxD) {
         for (s in 0..maxS) {
             for (i in 0..9) {
-                val previousS = s - i * pow2[d - 1]
+                val previousS = s - i * pow2(d - 1)
                 if (previousS >= 0) this[d][s] += this[d - 1][previousS]
             }
         }
@@ -41,12 +42,12 @@ fun decibinaryNumbers(f: List<LongArray>, c: LongArray, x: Long): Long {
         var temp = 0L
         while (decibinaryCount < g) {
             temp = decibinaryCount
-            decibinaryCount += f[d - 1][s - i++ * pow2[d - 1]]
+            decibinaryCount += f[d - 1][s - i++ * pow2(d - 1)]
         }
         i--
         decibinaryCount = temp
         decibinaryDigits += i
-        s -= i * pow2[d - 1]
+        s -= i * pow2(d - 1)
         g -= decibinaryCount
     }
     return decibinaryDigits.toLong()
